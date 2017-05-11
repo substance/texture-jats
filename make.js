@@ -71,7 +71,7 @@ b.task('classification', ['printInfo'], function() {
   })
 })
 
-b.task('demo', () => {
+b.task('demo', ['vfs'], () => {
   b.js('./src/demo.js', {
     dest: 'tmp/demo.js',
     format: 'umd', moduleName: 'xsd',
@@ -79,7 +79,7 @@ b.task('demo', () => {
       'vfs': path.join(__dirname, 'tmp/vfs.js')
     },
     external: {
-      substance: 'window.substance',
+      substance: 'window.substance'
     }
   })
 })

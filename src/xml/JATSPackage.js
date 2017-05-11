@@ -7,9 +7,7 @@ import StructuredNodeConverter from './StructuredNodeConverter'
 import XMLAnnotation from './XMLAnnotation'
 import XMLAnnotationConverter from './XMLAnnotationConverter'
 import HybridTextNode from './HybridTextNode'
-import HybridTextNodeConverter from './HybridTextNodeConverter'
 import HybridStructuredNode from './HybridStructuredNode'
-import HybridStructuredNodeConverter from './HybridStructuredNodeConverter'
 
 export default {
   name: 'JATS',
@@ -26,36 +24,37 @@ function defineSchema(config) {
     DocumentClass: JATSDocument,
     defaultTextType: 'p'
   })
-  // node definitions from XML schema
+  // add node definitions and converters
   JATS.forEach((element) => {
     if (element.name === 'EPSILON') return
-    let ParentClass, ConverterClass
+    let NodeClass, ConverterClass
     if (element.categories.annotation) {
-      ParentClass = XMLAnnotation
+      NodeClass = XMLAnnotation
       ConverterClass = XMLAnnotationConverter
     } else if (element.categories.text) {
       if (element.categories.hybrid) {
-        ParentClass = HybridTextNode
-        ConverterClass = HybridTextNodeConverter
+        NodeClass = HybridTextNode
       } else {
-        ParentClass = TextNode
-        ConverterClass = TextNodeConverter
+        NodeClass = TextNode
       }
+      ConverterClass = TextNodeConverter
     } else if (element.categories.structured) {
       if (element.categories.hybrid) {
-        ParentClass = HybridStructuredNode
-        ConverterClass = HybridStructuredNodeConverter
+        NodeClass = HybridStructuredNode
       } else {
-        ParentClass = StructuredNode
-        ConverterClass = StructuredNodeConverter
+        NodeClass = StructuredNode
       }
+      ConverterClass = StructuredNodeConverter
     } else {
       throw new Error('Illegal state')
     }
     // anonymous class definition
-    class Node extends ParentClass {}
+    class Node extends NodeClass {}
     Node.type = element.name
     config.addNode(Node)
-    config.addConverter('jats', ConverterClass)
+    let converter = new ConverterClass()
+    converter.tagName = element.name
+    converter.type = element.name
+    config.addConverter('jats', converter)
   })
 }

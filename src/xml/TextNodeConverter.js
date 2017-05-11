@@ -9,14 +9,12 @@ class TextNodeConverter {
   }
 
   import(el, node, converter) {
-    node.attributes = el.getAttributes()
-    // TODO: walk the childNodes using the validator
-    // and convert the elements into nodes and
-    // add the node ids to the node data
+    node.content = converter.annotatedText(el, [node.id, 'content'])
   }
 
   export(node, el, converter) {
-
+    el.setAttributes(node.attributes)
+    el.append(converter.annotatedText([node.id, 'content']))
   }
 
 }

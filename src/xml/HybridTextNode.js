@@ -10,3 +10,6 @@ HybridTextNode.schema = {
   start: { type: "coordinate", optional: true },
   end: { type: "coordinate", optional: true },
 }
+
+HybridTextNode.isAnnotation = true
+HybridTextNode.isBlock = true

@@ -7,12 +7,10 @@ export default class XMLAnnotationConverter {
     this.type = type
   }
 
-  import(el, node, converter) {
+  import(el, node) {}
 
-  }
-
-  export(node, el, converter) {
-
+  export(node, el) {
+    el.setAttributes(node.attributes)
   }
 
 }

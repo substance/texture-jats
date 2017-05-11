@@ -10,3 +10,7 @@ HybridStructuredNode.schema = {
   start: { type: "coordinate", optional: true },
   end: { type: "coordinate", optional: true },
 }
+
+HybridStructuredNode.isAnnotation = true
+HybridStructuredNode.isInline = true
+HybridStructuredNode.isBlock = true

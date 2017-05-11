@@ -9,7 +9,7 @@ class Validator {
     this.elementIds = tagNames.reduce((m,k,idx)=>{m[k]=idx;return m}, {})
     let specs = {}
     let dfas = {}
-    // HACK: hard-coded constants for EPSILON and TEXT
+    // HACK: hard-coded constant for EPSILON
     const EPSILON = 0
     data.forEach((e) => {
       specs[e.name] = e
@@ -22,54 +22,132 @@ class Validator {
     this.errors = []
   }
 
+  getElementValidator(tagName) {
+    let spec = this.specs[tagName]
+    if (!spec) throw new Error('Unsupported element')
+    let dfa = this.dfas[tagName]
+    return new ElementValidator(this.elementIds, spec, dfa)
+  }
+
   isValid(el) {
     let valid = true
     const name = el.tagName
-    const spec = this.specs[name]
-    const dfa = this.dfas[name]
-    if (!spec) throw new Error('Unsupported element')
-    // TODO: here we will also check the validity of attributes
+    const elValidator = this.getElementValidator(name)
+    const errors = elValidator.checkAttributes(el)
+    if (errors) {
+      this.errors = this.errors.concat(errors)
+    }
     const iterator = el.getChildNodeIterator()
-    let state = 0
     while (iterator.hasNext()) {
-      const child = iterator.next()
-      if (child.isTextNode()) {
-        // text nodes are ok if mixed=true
-        if (spec.mixed) {
-          continue
+      let error = null
+      const childEl = iterator.next()
+      if (childEl.isTextNode()) {
+        error = elValidator.consumeText(childEl.textContent)
+        if (error) {
+          valid = false
+          this.errors.push(error)
         }
-        // if not, then text nodes must be 'empty'
-        if (/^\s*$/.exec(child.textContent)) {
-          continue
-        }
-        this.errors.push(`Text is not allowed in element: <${name}>`)
         continue
       }
       // skip all other nodes
-      if (!child.isElementNode()) continue
-      const tagName = child.tagName
-      const id = this.getId(child.tagName)
-      if (id === undefined) {
-        this.errors.push(`Unsupported element: <${child.tagName}>`)
-        valid = false
-        continue
+      if (!childEl.isElementNode()) continue
+
+      // check if the child element is valid here
+      error = elValidator.consume(childEl.tagName)
+      if (error) {
+        this.errors.push(error)
       }
-      state = dfa.consume(state, id)
-      if (state === -1) {
-        this.errors.push(`<${tagName}> is not valid in ${el.tagName}`)
-        return false
-      }
-      valid = this.isValid(child) && valid
+      // validate the child element recursively
+      valid = this.isValid(childEl) && valid
     }
-    if (!dfa.isFinished(state)) {
+    if (!elValidator.isFinished()) {
       this.errors.push(`<${el.tagName}> is incomplete`)
-      return false
+      valid = false
     }
     return valid
   }
 
-  getId(name) {
-    return this.elementIds[name]
+  getValidatingChildNodeIterator(el) {
+    return new ValidatingChildNodeIterator(el.getChildNodeIterator(), this.getElementValidator(el.tagName))
+  }
+}
+
+class ElementValidator {
+
+  constructor(elementIds, spec, dfa) {
+    this.elementIds = elementIds
+    this.spec = spec
+    this.dfa = dfa
+
+    this.reset()
+  }
+
+  reset() {
+    this.state = 0
+  }
+
+  checkAttributes() {
+    // TODO: check attributes
+  }
+
+  consumeText(textContent) {
+    const spec = this.spec
+    if (!spec.mixed && /^\s*$/.exec(textContent)) {
+      return `Text is not allowed in element: <${spec.name}>`
+    }
+  }
+
+  consume(tagName) {
+    let id = this.elementIds[tagName]
+    if (id === undefined) {
+      return `Unsupported element: <${tagName}>`
+    }
+    this.state = this.dfa.consume(this.state, id)
+    if (this.state === -1) {
+      return `<${tagName}> is not valid in ${this.spec.name}`
+    }
+  }
+
+  isFinished() {
+    return this.dfa.isFinished(this.state)
+  }
+}
+
+class ValidatingChildNodeIterator {
+
+  constructor(it, validator) {
+    this._it = it
+    this._validator = validator
+    this._states = []
+  }
+
+  hasNext() {
+    return this._it.hasNext()
+  }
+
+  next() {
+    let error
+    let next = this._it.next()
+    if (next.isTextNode()) {
+      error = this._validator.consumeText(next.textContent)
+    } else if (next.isElementNode()) {
+      error = this._validator.consume(next.tagName)
+    }
+    if (error) {
+      throw new Error(error)
+    }
+    this._states.push(this._validator.state)
+    return next
+  }
+
+  back() {
+    this._it.back()
+    this._validator.state = this._states.pop()
+    return this
+  }
+
+  peek() {
+    return this._it.peek()
   }
 
 }
