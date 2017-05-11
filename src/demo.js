@@ -1,12 +1,29 @@
-import { DefaultDOMElement as DOM, Configurator, uuid, forEach } from 'substance'
+/* eslint-disable no-console, no-debugger */
+import { DefaultDOMElement as DOM, Configurator, forEach } from 'substance'
 import vfs from 'vfs'
-import JATS from '../JATS'
-import Validator from './Validator'
-import XMLDocument from '../xml/XMLDocument'
-import XMLElementNode from '../xml/XMLElementNode'
-import compileXSD from './compileXSD'
+import JATS from './JATS'
+import Validator from './xsd/Validator'
+import compileXSD from './xsd/compileXSD'
+import JATSPackage from './xml/JATSPackage'
+import JATSImporter from './xml/JATSImporter'
 
-function _compileXSD() {
+window.onload = function() {
+  // _compileXSD()
+  // validatorDemo()
+  // printInfo()
+  importDemo()
+}
+
+function importDemo() {
+  let config = new Configurator()
+  config.import(JATSPackage)
+  let xml = vfs.readFileSync('data/elife-15278.xml')
+  let importer = new JATSImporter(config)
+  let doc = importer.importDocument(xml)
+  console.info(doc)
+}
+
+function _compileXSD() { //eslint-disable-line
   // TODO: ATM we can't import/include other xsd files
   // as soon this is working we should use
   // 'data/JATS/JATS-archive-oasis-article1-mathml3.xsd'
@@ -17,7 +34,7 @@ function _compileXSD() {
   debugger
 }
 
-function printInfo() {
+function printInfo() { //eslint-disable-line
   let xsd = vfs.readFileSync('data/JATS/JATS-archive-oasis-article1-mathml3-elements.xsd')
   let schema = compileXSD(xsd)
   let parents = {}
@@ -80,7 +97,7 @@ function printInfo() {
   console.log(str.join('\n'))
 }
 
-function validatorDemo() {
+function validatorDemo() { //eslint-disable-line
   let xml = vfs.readFileSync('data/elife-15278.xml')
   let dom = DOM.parseXML(xml)
   let articleEl = dom.find('article')
@@ -94,46 +111,4 @@ function validatorDemo() {
   } else {
     console.info('Article is valid. \uD83D\uDE0D')
   }
-}
-
-function documentDemo() {
-  let config = new Configurator()
-  config.defineSchema({
-    DocumentClass: XMLDocument
-  })
-  // create a schema with a node for each element type
-  JATS.forEach((e) => {
-    class Node extends XMLElementNode {}
-    Node.type = e.name
-    config.addNode(Node)
-  })
-  let xml = vfs.readFileSync('data/elife-15278.xml')
-  let dom = DOM.parseXML(xml)
-  let doc = new XMLDocument(config.getSchema())
-  importElement(doc, dom.find('article'))
-  console.info(doc)
-}
-
-function importElement(doc, el) {
-  let attributes = {}
-  el.getAttributes().forEach((val, key) => {
-    attributes[key] = val
-  })
-  let nodeData = {
-    type: el.tagName,
-    id: el.id || uuid(el.tagName),
-    attributes
-  }
-  let children = el.getChildren()
-  nodeData.childNodes = children.map(c => {
-    const node = importElement(doc, c)
-    return node.id
-  })
-  return doc.create(nodeData)
-}
-
-window.onload = function() {
-  // _compileXSD()
-  // validatorDemo()
-  printInfo()
 }

@@ -1,7 +1,7 @@
 import XMLNode from './XMLNode'
 
 export default
-class XMLElementNode extends XMLNode {
+class StructuredNode extends XMLNode {
 
   constructor(doc, data) {
     super(doc, data)
@@ -16,13 +16,15 @@ class XMLElementNode extends XMLNode {
       this.childNodes = new Proxy(childNodes, CHILDREN_PROXY(this))
     }
   }
-
 }
 
-XMLElementNode.type = 'xml-element'
+StructuredNode.type = 'structured-node'
 
-XMLElementNode.schema = {
-  childNodes: { type: ['array', 'id'], default: [], owned: true}
+StructuredNode.schema = {
+  childNodes: { type: ['array', 'id'], default: [], owned: true},
+  // when used as annotation
+  start: { type: "coordinate", optional: true },
+  end: { type: "coordinate", optional: true },
 }
 
 function CHILDREN_PROXY(node) {

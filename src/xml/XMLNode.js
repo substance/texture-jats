@@ -2,6 +2,8 @@ import { DocumentNode, uuid } from 'substance'
 
 const SIGNATURE = uuid('_XMLNode')
 
+// TODO: we should not duplicate the DOM, instead
+// make css-select capable to deal with the indirection via node ids
 export default
 class XMLNode extends DocumentNode {
 

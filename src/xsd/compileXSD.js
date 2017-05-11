@@ -13,7 +13,7 @@ import serialize from './serializeDFA'
  [{ name: "abbrev", attributes: {...}, transitions: {0: {...}}},...]
  ```
 */
-export default function compileXSD(xsdStr) {
+export default function compileXSD(xsdStr, debug=false) {
   const {xsd, dfas} = DFABuilder.compile(xsdStr)
   const serialized = serialize(xsd, dfas)
   const elements = {}
@@ -43,12 +43,12 @@ export default function compileXSD(xsdStr) {
    - hybrid: is used as block-level (child of structured), as well as inline
   */
   const { parents, children } = _getParentsAndChildren(compiled)
-  _categorizeElements(elements, parents, children)
+  _categorizeElements(elements, parents, children, debug)
 
   return compiled
 }
 
-function _categorizeElements(elements, parents, children) {
+function _categorizeElements(elements, parents, children, debug=false) {
   // first is EPSILON
   const tagNames = Object.keys(elements)
   /*
@@ -89,12 +89,14 @@ function _categorizeElements(elements, parents, children) {
     }
     if (pStructured && pText) {
       e.categories['hybrid'] = true
-      e.hybridBecause = [
-        '\n    - used inline by ', String(textPs),
-        ',\n    - but as structured element by ', String(structuredPs)
-      ].join('')
+      if (debug) {
+        e.hybridBecause = [
+          '\n    - used inline by ', String(textPs),
+          ',\n    - but as structured element by ', String(structuredPs)
+        ].join('')
+      }
     } else if (pText) {
-      e.categories['anno'] = true
+      e.categories['annotation'] = true
     }
   }
 }
