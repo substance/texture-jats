@@ -18,7 +18,7 @@ b.task('vfs', function() {
 })
 
 b.task('jats', function() {
-  const XSD_PATH = 'data/JATS/JATS-archive-oasis-article1-mathml3-elements.xsd'
+  const XSD_PATH = 'data/xsd/JATS-archive-oasis-article1-mathml3-elements.xsd'
   b.js('./src/xsd/compileXSD.js', {
     dest: 'tmp/compileXSD.js',
     format: 'cjs',
@@ -31,13 +31,14 @@ b.task('jats', function() {
       const compileXSD = require('./tmp/compileXSD')
       const xsdString = fs.readFileSync(XSD_PATH, 'utf8')
       const xsdData = compileXSD(xsdString)
-      const code = `export default ${JSON.stringify(xsdData)}`
+      // TODO: eventually we should minify this, but for now pretty-print
+      const code = `export default ${JSON.stringify(xsdData, 0, 2)}`
       b.writeSync('src/JATS.js', code)
     }
   })
 })
 
-b.task('proposal', ['vfs'], function() {
+b.task('printInfo', ['vfs'], () => {
   b.js('./src/printInfo.js', {
     dest: 'tmp/printInfo.js',
     format: 'cjs',
@@ -46,29 +47,43 @@ b.task('proposal', ['vfs'], function() {
     },
     external: ['substance']
   })
+})
+
+b.task('definition', ['printInfo'], function() {
   b.custom('Generating info...', {
     src: 'tmp/printInfo.js',
     dest: 'proposal/JATS.md',
     execute() {
       const printInfo = require('./tmp/printInfo')
-      b.writeSync('proposal/JATS.md', printInfo())
+      b.writeSync('proposal/JATS.md', printInfo({ structure: true }))
     }
   })
 })
 
-b.task('xsd', () => {
-  b.js('./src/xsd/demo.js', {
-    dest: 'dist/demo.js',
+b.task('classification', ['printInfo'], function() {
+  b.custom('Generating info...', {
+    src: 'tmp/printInfo.js',
+    dest: 'proposal/CLASSIFICATION.md',
+    execute() {
+      const printInfo = require('./tmp/printInfo')
+      b.writeSync('proposal/CLASSIFICATION.md', printInfo({ classification: true }))
+    }
+  })
+})
+
+b.task('demo', () => {
+  b.js('./src/demo.js', {
+    dest: 'tmp/demo.js',
     format: 'umd', moduleName: 'xsd',
+    alias: {
+      'vfs': path.join(__dirname, 'tmp/vfs.js')
+    },
     external: {
       substance: 'window.substance',
-      vfs: 'window.VFS'
     }
   })
 })
-
-b.task('default', ['vfs', 'jats', 'proposal', 'xsd'])
 
 /* HTTP server */
 b.setServerPort(5556)
-b.serve({ static: true, route: '/', folder: 'dist' })
+b.serve({ static: true, route: '/', folder: '.' })
