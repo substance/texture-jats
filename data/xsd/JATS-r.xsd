@@ -7428,7 +7428,7 @@
    </xsd:group>
    <xsd:group name="inline-formula-elements">
       <xsd:choice>
-         <xsd:group ref="all-phrase"/>
+         <xsd:group ref="math.class"/>
       </xsd:choice>
    </xsd:group>
    <xsd:group name="inline-graphic-model">
