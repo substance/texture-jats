@@ -5833,7 +5833,7 @@
          <xsd:group ref="emphasis.class"/>
          <xsd:group ref="inline-display.class"/>
          <xsd:group ref="inline-math.class"/>
-         <xsd:group ref="math.class"/>
+         <!-- <xsd:group ref="math.class"/> -->
          <xsd:group ref="phrase.class"/>
          <xsd:group ref="simple-link.class"/>
          <xsd:group ref="subsup.class"/>
