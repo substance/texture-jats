@@ -3,8 +3,13 @@ import vfs from 'vfs'
 import compileXSD from './xsd/compileXSD'
 
 export default function printInfo(options={}) {
-  let xsd = vfs.readFileSync('data/xsd/JATS-archive-oasis-article1-mathml3-elements.xsd')
-  let schema = compileXSD(xsd, 'debug')
+  let schema
+  if (options.xsdPath) {
+    let xsd = vfs.readFileSync(options.xsdPath)
+    schema = compileXSD(xsd, 'debug')
+  } else if (options.schema) {
+    schema = options.schema
+  }
   let parents = {}
   let children = {}
   // the first is a pseudo entry EPSILON
@@ -26,6 +31,14 @@ export default function printInfo(options={}) {
   })
 
   let str = []
+
+  if (options.classification) {
+    const hybrids = elements.filter((e)=>{
+      return e.categories && e.categories.hybrid
+    })
+    str.push(`Number of hybrids: ${hybrids.length}`)
+  }
+
   elements.forEach((e)=>{
     const name = e.name
     if (options.hybridOnly) {

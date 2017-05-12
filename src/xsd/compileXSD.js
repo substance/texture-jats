@@ -13,7 +13,7 @@ import serialize from './serializeDFA'
  [{ name: "abbrev", attributes: {...}, transitions: {0: {...}}},...]
  ```
 */
-export default function compileXSD(xsdStr, debug=false) {
+export default function compileXSD(xsdStr, {debug}) {
   const {xsd, dfas} = DFABuilder.compile(xsdStr)
   const serialized = serialize(xsd, dfas)
   const elements = {}

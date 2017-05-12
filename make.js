@@ -55,7 +55,10 @@ b.task('definition', ['printInfo'], function() {
     dest: 'proposal/JATS.md',
     execute() {
       const printInfo = require('./tmp/printInfo')
-      b.writeSync('proposal/JATS.md', printInfo({ structure: true }))
+      b.writeSync('proposal/JATS.md', printInfo({
+        xsdPath: 'data/xsd/JATS-archive-oasis-article1-mathml3-elements.xsd',
+        structure: true
+      }))
     }
   })
 })
@@ -66,8 +69,22 @@ b.task('classification', ['printInfo'], function() {
     dest: 'proposal/CLASSIFICATION.md',
     execute() {
       const printInfo = require('./tmp/printInfo')
-      b.writeSync('proposal/CLASSIFICATION.md', printInfo({ classification: true }))
+      b.writeSync('proposal/CLASSIFICATION.md', printInfo({
+        xsdPath: 'data/xsd/JATS-archive-oasis-article1-mathml3-elements.xsd',
+        classification: true
+      }))
     }
+  })
+})
+
+b.task('stats', ['vfs'], () => {
+  b.js('./src/stats.js', {
+    dest: 'tmp/stats.js',
+    format: 'cjs',
+    alias: {
+      'vfs': path.join(__dirname, 'tmp/vfs.js')
+    },
+    external: ['substance']
   })
 })
 
