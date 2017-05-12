@@ -6627,7 +6627,7 @@
       <xsd:choice>
          <xsd:element ref="element-citation"/>
          <xsd:element ref="mixed-citation"/>
-         <xsd:element ref="nlm-citation"/>
+         <!-- <xsd:element ref="nlm-citation"/> -->
       </xsd:choice>
    </xsd:group>
    <xsd:group name="city-elements">
@@ -7629,7 +7629,7 @@
          <xsd:element ref="citation-alternatives"/>
          <xsd:element ref="element-citation"/>
          <xsd:element ref="mixed-citation"/>
-         <xsd:element ref="nlm-citation"/>
+         <!-- <xsd:element ref="nlm-citation"/> -->
       </xsd:choice>
    </xsd:group>
    <xsd:group name="price.class">
