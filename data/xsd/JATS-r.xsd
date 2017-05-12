@@ -3515,7 +3515,7 @@
             </div>
          </xsd:documentation>
       </xsd:annotation>
-      <xsd:complexType mixed="true">
+      <xsd:complexType>
          <xsd:group ref="person-group-model" minOccurs="0" maxOccurs="unbounded"/>
          <xsd:attribute name="id" use="optional" type="xsd:ID"/>
          <xsd:attribute name="person-group-type" use="optional" type="xsd:string"/>
