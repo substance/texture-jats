@@ -1395,7 +1395,7 @@
             </div>
          </xsd:documentation>
       </xsd:annotation>
-      <xsd:complexType mixed="true">
+      <xsd:complexType>
          <xsd:choice minOccurs="0" maxOccurs="unbounded">
             <xsd:group ref="corresp-elements"/>
          </xsd:choice>
@@ -6847,9 +6847,10 @@
    </xsd:group>
    <xsd:group name="corresp-elements">
       <xsd:choice>
+         <xsd:group ref="x.class"/>
          <xsd:group ref="address.class"/>
-         <xsd:group ref="all-phrase"/>
-         <xsd:group ref="break.class"/>
+         <!-- <xsd:group ref="all-phrase"/> -->
+         <!-- <xsd:group ref="break.class"/> -->
          <xsd:group ref="label.class"/>
       </xsd:choice>
    </xsd:group>
