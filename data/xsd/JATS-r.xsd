@@ -1663,7 +1663,7 @@
             </div>
          </xsd:documentation>
       </xsd:annotation>
-      <xsd:complexType mixed="true">
+      <xsd:complexType>
          <xsd:group ref="disp-formula-model" minOccurs="0" maxOccurs="unbounded"/>
          <xsd:attribute name="content-type" use="optional" type="xsd:string"/>
          <xsd:attribute name="id" use="optional" type="xsd:ID"/>
@@ -6978,10 +6978,11 @@
    </xsd:group>
    <xsd:group name="disp-formula-elements">
       <xsd:choice>
-         <xsd:group ref="all-phrase"/>
+         <xsd:group ref="math.class"/>
+         <!-- <xsd:group ref="all-phrase"/> -->
          <xsd:group ref="abstract.class"/>
          <xsd:group ref="access.class"/>
-         <xsd:group ref="break.class"/>
+         <!-- <xsd:group ref="break.class"/> -->
          <xsd:group ref="display-back-matter.class"/>
          <xsd:group ref="kwd-group.class"/>
          <xsd:group ref="label.class"/>
