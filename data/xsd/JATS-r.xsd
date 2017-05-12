@@ -7706,10 +7706,10 @@
    <xsd:group name="named-content-elements">
       <xsd:choice>
          <xsd:group ref="all-phrase"/>
-         <xsd:group ref="block-display-noalt.class"/>
-         <xsd:group ref="block-math.class"/>
-         <xsd:group ref="list.class"/>
-         <xsd:group ref="rest-of-para.class"/>
+         <!-- <xsd:group ref="block-display-noalt.class"/> -->
+         <!-- <xsd:group ref="block-math.class"/> -->
+         <!-- <xsd:group ref="list.class"/> -->
+         <!-- <xsd:group ref="rest-of-para.class"/> -->
       </xsd:choice>
    </xsd:group>
    <xsd:group name="nested-kwd-model">
