@@ -6626,7 +6626,7 @@
    <xsd:group name="citation-minus-alt.class">
       <xsd:choice>
          <xsd:element ref="element-citation"/>
-         <xsd:element ref="mixed-citation"/>
+         <!-- <xsd:element ref="mixed-citation"/> -->
          <!-- <xsd:element ref="nlm-citation"/> -->
       </xsd:choice>
    </xsd:group>
@@ -7628,7 +7628,7 @@
       <xsd:choice>
          <xsd:element ref="citation-alternatives"/>
          <xsd:element ref="element-citation"/>
-         <xsd:element ref="mixed-citation"/>
+         <!-- <xsd:element ref="mixed-citation"/> -->
          <!-- <xsd:element ref="nlm-citation"/> -->
       </xsd:choice>
    </xsd:group>
