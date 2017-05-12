@@ -4281,7 +4281,7 @@
             </div>
          </xsd:documentation>
       </xsd:annotation>
-      <xsd:complexType mixed="true">
+      <xsd:complexType>
          <xsd:choice minOccurs="0" maxOccurs="unbounded">
             <xsd:group ref="sig-block-elements"/>
          </xsd:choice>
@@ -8180,11 +8180,11 @@
    </xsd:group>
    <xsd:group name="sig-block-elements">
       <xsd:choice>
-         <xsd:group ref="all-phrase"/>
-         <xsd:group ref="break.class"/>
-         <xsd:group ref="contrib.class"/>
-         <xsd:group ref="just-base-display-noalt.class"/>
-         <xsd:group ref="person-group-info.class"/>
+         <!-- <xsd:group ref="all-phrase"/> -->
+         <!-- <xsd:group ref="break.class"/> -->
+         <!-- <xsd:group ref="contrib.class"/> -->
+         <!-- <xsd:group ref="just-base-display-noalt.class"/> -->
+         <!-- <xsd:group ref="person-group-info.class"/> -->
          <xsd:group ref="sig.class"/>
       </xsd:choice>
    </xsd:group>
