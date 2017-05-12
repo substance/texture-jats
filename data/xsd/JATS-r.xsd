@@ -5880,7 +5880,7 @@
    </xsd:group>
    <xsd:group name="inline-display.class">
       <xsd:choice>
-         <xsd:element ref="alternatives"/>
+         <!-- <xsd:element ref="alternatives"/> -->
          <xsd:element ref="inline-graphic"/>
          <xsd:element ref="private-char"/>
       </xsd:choice>
