@@ -3196,7 +3196,7 @@
          <xsd:attribute ref="xml:base" use="optional"/>
       </xsd:complexType>
    </xsd:element>
-   <xsd:element name="nlm-citation">
+   <!--<xsd:element name="nlm-citation">
       <xsd:annotation>
          <xsd:documentation>
             <div xmlns="http://www.w3.org/1999/xhtml">
@@ -3262,7 +3262,7 @@
          <xsd:attribute ref="xml:base" use="optional"/>
          <xsd:attribute ref="xml:lang" use="optional"/>
       </xsd:complexType>
-   </xsd:element>
+   </xsd:element>-->
    <xsd:element name="note">
       <xsd:annotation>
          <xsd:documentation>
