@@ -7594,7 +7594,7 @@
    <xsd:group name="license-p-elements">
       <xsd:choice>
          <xsd:group ref="p-elements"/>
-         <xsd:group ref="price.class"/>
+         <!-- <xsd:group ref="price.class"/> -->
       </xsd:choice>
    </xsd:group>
    <xsd:group name="p-elements">
