@@ -77,7 +77,7 @@ b.task('classification', ['printInfo'], function() {
   })
 })
 
-b.task('stats', ['vfs'], () => {
+b.task('stats', ['vfs', 'jats'], () => {
   b.js('./src/stats.js', {
     dest: 'tmp/stats.js',
     format: 'cjs',

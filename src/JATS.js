@@ -2723,7 +2723,7 @@ export default [
     "dfa": {},
     "categories": {
       "structured": true,
-      "anno": true
+      "annotation": true
     }
   },
   {
@@ -12989,7 +12989,7 @@ export default [
     "mixed": true,
     "categories": {
       "text": true,
-      "anno": true
+      "annotation": true
     }
   },
   {
@@ -15435,7 +15435,7 @@ export default [
     "mixed": true,
     "categories": {
       "text": true,
-      "anno": true
+      "annotation": true
     }
   },
   {
@@ -16068,7 +16068,7 @@ export default [
     "mixed": true,
     "categories": {
       "text": true,
-      "anno": true
+      "annotation": true
     }
   },
   {
