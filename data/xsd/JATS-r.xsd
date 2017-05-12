@@ -8276,7 +8276,7 @@
    <xsd:group name="string-conf-elements">
       <xsd:choice>
          <xsd:group ref="simple-text"/>
-         <xsd:group ref="conference.class"/>
+         <!-- <xsd:group ref="conference.class"/> -->
       </xsd:choice>
    </xsd:group>
    <xsd:group name="string-date-elements">
