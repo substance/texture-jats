@@ -1122,7 +1122,7 @@
             </div>
          </xsd:documentation>
       </xsd:annotation>
-      <xsd:complexType mixed="true">
+      <xsd:complexType>
          <xsd:choice minOccurs="0" maxOccurs="unbounded">
             <xsd:group ref="conf-loc-elements"/>
          </xsd:choice>
@@ -6740,7 +6740,7 @@
    </xsd:group>
    <xsd:group name="conf-loc-elements">
       <xsd:choice>
-         <xsd:group ref="simple-text"/>
+         <xsd:group ref="x.class"/>
          <xsd:group ref="address.class"/>
       </xsd:choice>
    </xsd:group>
