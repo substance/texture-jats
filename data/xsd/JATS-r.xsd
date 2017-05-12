@@ -3707,7 +3707,7 @@
             </div>
          </xsd:documentation>
       </xsd:annotation>
-      <xsd:complexType mixed="true">
+      <xsd:complexType>
          <xsd:choice minOccurs="0" maxOccurs="unbounded">
             <xsd:group ref="product-elements"/>
          </xsd:choice>
@@ -7952,20 +7952,20 @@
    </xsd:group>
    <xsd:group name="product-elements">
       <xsd:choice>
-         <xsd:group ref="article-link.class"/>
-         <xsd:group ref="appearance.class"/>
-         <xsd:group ref="break.class"/>
+         <!-- <xsd:group ref="article-link.class"/> -->
+         <!-- <xsd:group ref="appearance.class"/> -->
+         <!-- <xsd:group ref="break.class"/> -->
          <xsd:group ref="citation-additions.class"/>
-         <xsd:group ref="emphasis.class"/>
-         <xsd:group ref="inline-display.class"/>
-         <xsd:group ref="inline-math.class"/>
+         <!-- <xsd:group ref="emphasis.class"/> -->
+         <!-- <xsd:group ref="inline-display.class"/> -->
+         <!-- <xsd:group ref="inline-math.class"/> -->
          <xsd:group ref="label.class"/>
-         <xsd:group ref="math.class"/>
-         <xsd:group ref="phrase.class"/>
+         <!-- <xsd:group ref="math.class"/> -->
+         <!-- <xsd:group ref="phrase.class"/> -->
          <xsd:group ref="price.class"/>
          <xsd:group ref="references.class"/>
          <xsd:group ref="simple-link.class"/>
-         <xsd:group ref="subsup.class"/>
+         <!-- <xsd:group ref="subsup.class"/> -->
          <xsd:group ref="x.class"/>
       </xsd:choice>
    </xsd:group>
