@@ -1736,7 +1736,8 @@
       </xsd:annotation>
       <xsd:complexType>
          <xsd:choice maxOccurs="unbounded">
-            <xsd:group ref="citation-elements"/>
+            <!-- <xsd:group ref="citation-elements"/> -->
+            <xsd:group ref="references.class"/>
          </xsd:choice>
          <xsd:attribute name="id" use="optional" type="xsd:ID"/>
          <xsd:attribute name="publication-format" use="optional" type="xsd:string"/>
