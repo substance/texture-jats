@@ -1,6 +1,6 @@
 import { DefaultDOMElement, DOMImporter, map } from 'substance'
 import JATS from '../JATS'
-import Validator from '../xsd/Validator'
+import Validator from '../common/Validator'
 import XMLAnnotationConverter from './XMLAnnotationConverter'
 
 export default

@@ -1,5 +1,10 @@
 import { forEach } from 'substance'
 
+const START = 'START'
+const END = 'END'
+const EPSILON = 'EPSILON'
+const TEXT = 'TEXT'
+
 export default
 class DFA {
 
@@ -45,5 +50,9 @@ class DFA {
     }
     return false
   }
-
 }
+
+DFA.START = START
+DFA.END = END
+DFA.EPSILON = EPSILON
+DFA.TEXT = TEXT

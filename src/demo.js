@@ -2,16 +2,19 @@
 import { DefaultDOMElement as DOM, Configurator, forEach } from 'substance'
 import vfs from 'vfs'
 import JATS from './JATS'
-import Validator from './xsd/Validator'
+import Validator from './common/Validator'
 import compileXSD from './xsd/compileXSD'
 import JATSPackage from './xml/JATSPackage'
 import JATSImporter from './xml/JATSImporter'
+import compileRNG from './rng/compileRNG'
 
 window.onload = function() {
   // _compileXSD()
   // validatorDemo()
   // printInfo()
-  importDemo()
+  // importDemo()
+  let schema = compileRNG(vfs, 'data/rng', 'JATS-archive-oasis-article1-mathml3.rng')
+  debugger
 }
 
 function importDemo() {

@@ -33,16 +33,16 @@ export default function printInfo(options={}) {
   let str = []
 
   if (options.classification) {
-    const hybrids = elements.filter((e)=>{
-      return e.categories && e.categories.hybrid
+    const conflicts = elements.filter((e)=>{
+      return e.categories && e.categories.conflict
     })
-    str.push(`Number of hybrids: ${hybrids.length}`)
+    str.push(`Number of conflicts: ${conflicts.length}`)
   }
 
   elements.forEach((e)=>{
     const name = e.name
-    if (options.hybridOnly) {
-      if(e.hybridBecause) {
+    if (options.conflictOnly) {
+      if(e.conflictBecause) {
         str.push(name)
       }
       return
@@ -50,15 +50,15 @@ export default function printInfo(options={}) {
     str.push(`# &lt;${name}&gt; [spec](https://jats.nlm.nih.gov/archiving/tag-library/1.1/element/${name}.html)`)
     str.push('')
 
-    // render categories and info about why a node is considered 'hybrid',
+    // render categories and info about why a node is considered conflict,
     // i.e. used as inline and block-level node
     if (options.classification) {
       if (e.categories) {
         str.push(`- categories: ${Object.keys(e.categories)}`)
         str.push('')
       }
-      if (e.hybridBecause) {
-        str.push('  considered as hybrid because: ' + e.hybridBecause)
+      if (e.conflictBecause) {
+        str.push('  considered as conflict because: ' + e.conflictBecause)
         str.push('')
       }
     }

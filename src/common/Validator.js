@@ -1,32 +1,19 @@
 import DFA from './DFA'
 
+const TEXT = DFA.TEXT
+
 export default
 class Validator {
 
-  constructor(data) {
-    const tagNames = data.map(e=>e.name)
-    this.elementNames = tagNames
-    this.elementIds = tagNames.reduce((m,k,idx)=>{m[k]=idx;return m}, {})
-    let specs = {}
-    let dfas = {}
-    // HACK: hard-coded constant for EPSILON
-    const EPSILON = 0
-    data.forEach((e) => {
-      specs[e.name] = e
-      if (e.dfa) {
-        dfas[e.name] = new DFA(e.dfa, EPSILON)
-      }
-    })
-    this.specs = specs
-    this.dfas = dfas
+  constructor(xmlSchema) {
+    this.schema = xmlSchema
     this.errors = []
   }
 
   getElementValidator(tagName) {
-    let spec = this.specs[tagName]
+    let spec = this.schema[tagName]
     if (!spec) throw new Error('Unsupported element')
-    let dfa = this.dfas[tagName]
-    return new ElementValidator(this.elementIds, spec, dfa)
+    return new ElementValidator(spec)
   }
 
   isValid(el) {
@@ -74,11 +61,9 @@ class Validator {
 
 class ElementValidator {
 
-  constructor(elementIds, spec, dfa) {
-    this.elementIds = elementIds
+  constructor(spec) {
     this.spec = spec
-    this.dfa = dfa
-
+    this.dfa = spec.dfa
     this.reset()
   }
 
@@ -92,17 +77,13 @@ class ElementValidator {
 
   consumeText(textContent) {
     const spec = this.spec
-    if (!spec.mixed && /^\s*$/.exec(textContent)) {
+    if (!spec[this.state][TEXT] && !/^\s*$/.exec(textContent)) {
       return `Text is not allowed in element: <${spec.name}>`
     }
   }
 
   consume(tagName) {
-    let id = this.elementIds[tagName]
-    if (id === undefined) {
-      return `Unsupported element: <${tagName}>`
-    }
-    this.state = this.dfa.consume(this.state, id)
+    this.state = this.dfa.consume(this.state, tagName)
     if (this.state === -1) {
       return `<${tagName}> is not valid in ${this.spec.name}`
     }
