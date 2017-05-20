@@ -52,6 +52,15 @@ b.task('jats:classify', ['jats:compile'], () => {
   _classify('JATS')
 })
 
+b.task('restricted-jats:compile', ['tools'], () => {
+  _compile('restrictedJATS', 'src/rng/restrictedJATS.rng', RNG_SEARCH_DIRS)
+})
+
+b.task('restricted-jats:classify', ['restricted-jats:compile'], () => {
+  _classify('restrictedJATS')
+})
+
+
 function _compile(name, src, searchDirs) {
   const DEST = `generated/${name}.schema.json`
   const entry = path.basename(src)
