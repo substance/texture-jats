@@ -1,5 +1,3 @@
-import { forEach } from 'substance'
-
 const START = 'START'
 const END = 'END'
 const EPSILON = 'EPSILON'
@@ -8,23 +6,12 @@ const TEXT = 'TEXT'
 export default
 class DFA {
 
-  constructor(data, EPSILON) {
-    this.EPSILON = EPSILON
-    let T = []
-    forEach(data, (transitions, state) => {
-      const t = {}
-      forEach(transitions, (ids, nextState) => {
-        ids.forEach(id=>{
-          t[id]=nextState
-        })
-      })
-      T[state] = t
-    })
-    this.T = T
+  constructor(transitions) {
+    this.transitions = transitions
   }
 
   consume(state, id) {
-    const T = this.T
+    const T = this.transitions
     let nextState = T[state][id]
     if (nextState !== undefined) {
       return nextState
@@ -41,7 +28,7 @@ class DFA {
   }
 
   isFinished(state) {
-    const T = this.T
+    const T = this.transitions
     const EPSILON = this.EPSILON
     if (state === 'END') return true
     while(T[state][EPSILON] !== undefined) {

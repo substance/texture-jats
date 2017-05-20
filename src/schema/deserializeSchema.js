@@ -1,7 +1,8 @@
 import { forEach } from 'substance'
 import DFA from './DFA'
+import XMLSchema from './XMLSchema'
 
-const { START, END } = DFA
+const { START, END, TEXT, EPSILON } = DFA
 
 export default
 function deserialize(data) {
@@ -9,16 +10,21 @@ function deserialize(data) {
   let tagNames = data.shift()
   let attributeNames = data.shift()
   let tokenMapping = tagNames.reduce((m,k,idx)=>{m[idx]=k;return m}, {})
+  tokenMapping['E'] = EPSILON
+  tokenMapping['T'] = TEXT
   let attributeMapping = attributeNames.reduce((m,k,idx)=>{m[idx]=k;return m}, {})
-  data.forEach((record) => {
-    const name = record[0]
-    const attrData = record[1]
-    const dfaData = record[2]
+  if (tagNames.length !== data.length) throw new Error('Invalid format: number of tagNames should match number of specs')
+  for (let i = 0; i < tagNames.length; i++) {
+    const name = tagNames[i]
+    const record = data[i]
+    const attrData = record[0]
+    const dfaData = record[1]
     const attributes = _deserializeAttributes(attrData, attributeMapping)
     const dfa = _deserializeDFA(dfaData, tokenMapping)
     elementSchemas[name] = { name, attributes, dfa }
-  })
-  return elementSchemas
+  }
+
+  return new XMLSchema(elementSchemas)
 }
 
 function _deserializeAttributes(attrData, attributeMapping) {

@@ -1,18 +1,20 @@
-import { DefaultDOMElement } from 'substance'
-import DFA from '../common/DFA'
-import DFABuilder from '../common/DFABuilder'
-import XMLSchema from '../common/XMLSchema'
+import { DefaultDOMElement, isArray } from 'substance'
+import DFA from './DFA'
+import DFABuilder from './DFABuilder'
+import XMLSchema from './XMLSchema'
 
 const TEXT = DFA.TEXT
 const singleToken = DFABuilder.singleToken
 
 export default
-function compileRNG(fs, baseDir, entry) {
-  let rngStr = fs.readFileSync(baseDir+'/'+entry, 'utf8')
+function compileRNG(fs, searchDirs, entry) {
+  if (!isArray(searchDirs)) searchDirs = [searchDirs]
+  let rngPath = _lookupRNG(fs, searchDirs, entry)
+  let rngStr = fs.readFileSync(rngPath, 'utf8')
   const rng = DefaultDOMElement.parseXML(rngStr, 'full-doc')
 
   // first pull in all includes (recursively)
-  while(_expandIncludes(fs, baseDir, rng)) {
+  while(_expandIncludes(fs, searchDirs, rng)) {
     //
   }
   const grammar = rng.find('grammar')
@@ -22,8 +24,7 @@ function compileRNG(fs, baseDir, entry) {
   _registerDefinitions(grammar)
 
   // for debugging/analysis create an expanded representation
-  let expanded = _expand(grammar)
-  debugger
+  // let expanded = _expand(grammar)
   // console.info("Expanded grammar:", expanded.getNativeElement())
 
   // turn the RNG schema into our internal data structure
@@ -32,14 +33,25 @@ function compileRNG(fs, baseDir, entry) {
   return new XMLSchema(grammar.schemas)
 }
 
-function _expandIncludes(fs, baseDir, root) {
+function _lookupRNG(fs, searchDirs, file) {
+  for (let i = 0; i < searchDirs.length; i++) {
+    let absPath = searchDirs[i] + '/' + file
+    if (fs.existsSync(absPath)) {
+      return absPath
+    }
+  }
+}
+
+function _expandIncludes(fs, searchDirs, root) {
   let includes = root.findAll('include')
   if (includes.length === 0) return false
 
   includes.forEach((include) => {
     const parent = include.parentNode
     const href = include.attr('href')
-    const rngStr = fs.readFileSync(baseDir+'/'+href, 'utf8')
+    const rngPath = _lookupRNG(fs, searchDirs, href)
+    if (!rngPath) throw new Error(`Could not find ${href}`)
+    const rngStr = fs.readFileSync(rngPath, 'utf8')
     const rng = DefaultDOMElement.parseXML(rngStr, 'full-doc')
     const grammar = rng.find('grammar')
     if (!grammar) throw new Error('No grammar element found')

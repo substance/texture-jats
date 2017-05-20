@@ -47,8 +47,10 @@ function serialize(xmlSchema) {
     let schema = xmlSchema.getElementSchema(name)
     let attrData = _serializeAttributes(schema.attributes, attributeMapping)
     let dfaData = _serializeDFA(schema.dfa, tokenMapping)
-    result.push([name, attrData, dfaData])
+    result.push([attrData, dfaData])
   }
+
+  return result
 }
 
 function _serializeAttributes(attributes, attributeMapping) {
@@ -67,7 +69,8 @@ function _serializeDFA(dfa, tokenMapping) {
   stateMapping[START] = 'S'
   stateMapping[END] = 'E'
 
-  let count = 0
+  // Attention: start with 1 so that value doesn't falsify
+  let count = 1
   forEach(dfa.transitions, (T, from) => {
     if (!stateMapping[from]) stateMapping[from] = count++
     from = stateMapping[from]
@@ -77,7 +80,7 @@ function _serializeDFA(dfa, tokenMapping) {
       if (!stateMapping[to]) stateMapping[to] = count++
       to = stateMapping[to]
       if (!_T[to]) _T[to] = []
-      _T[to] = tokenMapping[token]
+      _T[to].push(tokenMapping[token])
     })
   })
   return result

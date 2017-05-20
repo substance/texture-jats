@@ -1,15 +1,8 @@
-import { DefaultDOMElement } from 'substance'
+import { forEach, DefaultDOMElement } from 'substance'
+import DFABuilder from './DFABuilder'
+import DFA from './DFA'
 
-/*
-  Generates a presentation of a given XSD file content
-  consisting of 'groups' and 'elements'.
-*/
-export function parseXSD(xsdString) {
-  const xsdDoc = DefaultDOMElement.parseXML(xsdString, 'full-doc')
-  const schemaEl = xsdDoc.find('schema')
-  if (!schemaEl) throw new Error('Could not find <schema>')
-  return compileSchema(schemaEl)
-}
+const {START, END} = DFA
 
 export const ELEMENT = Symbol('ELEMENT')
 export const ATTRIBUTE = Symbol('ATTRIBUTE')
@@ -18,7 +11,195 @@ export const SEQUENCE = Symbol('SEQUENCE')
 export const GROUP = Symbol('GROUP')
 export const REFERENCE = Symbol('REFERENCE')
 
-function compileSchema(schemaEl) {
+
+/*
+ Creates a JSON which can be used to create a scanner for the XSD.
+
+ @example
+
+ output:
+ ```
+ [{ name: "abbrev", attributes: {...}, transitions: {0: {...}}},...]
+ ```
+*/
+export default
+function compileXSD(xsdStr) {
+  const {xsd, dfas} = _compile(xsdStr)
+  // TODO: create an XMLSchema instance
+  return {xsd, dfas}
+}
+
+function _compile(xsdStr) {
+  const xsd = _convertXSD(xsdStr)
+  const dfas = {}
+  forEach(xsd.elements, (element) => {
+    // the DFA will be stored in element._dfa
+    let dfa = _processElement(xsd, element)
+    dfas[element.name] = dfa
+  })
+  return {xsd, dfas}
+}
+
+function _processElement(context, element) {
+  // some elements do only have attributes
+  if (element._dfa) return element._dfa
+  const content = element.content
+  let dfa
+  if (!content) {
+    // TODO: do we want an empty DFA?
+    dfa = new DFABuilder()
+  } else {
+    switch (content.type) {
+      // for instance <body> just references the 'body-model' group
+      case REFERENCE: {
+        dfa = _transformReference(context, content)
+        break
+      }
+      case CHOICE: {
+        dfa = _transformChoice(context, content)
+        break
+      }
+      case SEQUENCE: {
+        dfa = _transformSequence(context, content)
+        break
+      }
+      default:
+        console.warn('Element content type not yet supported', content)
+        // debugger
+    }
+  }
+  element._dfa = dfa
+  return dfa
+}
+
+// a reference is pointing to a group or to an element
+function _transformReference(context, ref) {
+  let cardinality = ref.cardinality
+  let dfa
+  if (ref.targetType === ELEMENT) {
+    dfa = _transformElement(context, ref.targetName, cardinality)
+  } else {
+    console.assert(ref.targetType === GROUP, 'ref should point to a group')
+    let name = ref.targetName
+    let group = context.groups[name]
+    if (!group) throw new Error('Unknown group: '+name)
+    // TODO: we need to apply cardinality transformations here
+    if (group._dfa) {
+      return _addCardinality(group._dfa, cardinality)
+    }
+    let content = group.content
+    switch(content.type) {
+      case SEQUENCE: {
+        dfa = _transformSequence(context, content)
+        break
+      }
+      case CHOICE: {
+        dfa = _transformChoice(context, content)
+        break
+      }
+      default:
+        console.warn('Group content not supported yet', content)
+        // debugger
+    }
+    group._dfa = dfa
+    dfa = _addCardinality(dfa, cardinality)
+  }
+  return dfa
+}
+
+// a sequence adds a state after each child
+function _transformSequence(context, seq) {
+  let children = seq.children
+  let dfa = new DFABuilder()
+  let L = children.length
+  for (let i = 0; i < L; i++) {
+    let child = children[i]
+    switch(child.type) {
+      case ELEMENT: {
+        dfa.append(_transformElement(context, child.name, child.cardinality))
+        break
+      }
+      case REFERENCE: {
+        dfa.append(_transformReference(context, child))
+        break
+      }
+      case CHOICE: {
+        dfa.append(_transformChoice(context, child))
+        break
+      }
+      case SEQUENCE: {
+        dfa.append(_transformSequence(context, child))
+        break
+      }
+      default:
+        // debugger
+    }
+  }
+  dfa = _addCardinality(dfa, seq.cardinality)
+  return dfa
+}
+
+function _transformChoice(context, choice) {
+  let children = choice.children
+  let dfa = new DFABuilder()
+  let L = children.length
+  for (let i = 0; i < L; i++) {
+    let child = children[i]
+    switch(child.type) {
+      case ELEMENT: {
+        dfa.merge(_transformElement(context, child.name, child.cardinality))
+        break
+      }
+      case REFERENCE: {
+        dfa.merge(_transformReference(context, child))
+        break
+      }
+      case CHOICE: {
+        dfa.merge(_transformChoice(context, child))
+        break
+      }
+      case SEQUENCE: {
+        dfa.merge(_transformSequence(context, child))
+        break
+      }
+      default:
+        // debugger
+    }
+  }
+  dfa = _addCardinality(dfa, choice.cardinality)
+  return dfa
+}
+
+function _transformElement(context, name, cardinality) {
+  let dfa = new DFABuilder()
+  dfa.addTransition(START, END, name)
+  return _addCardinality(dfa, cardinality)
+}
+
+function _addCardinality(dfa, cardinality) {
+  switch(cardinality) {
+    case 1:
+      return dfa
+    case '?':
+      return dfa.optional()
+    case '*':
+      return dfa.kleene()
+    case '+':
+      return dfa.plus()
+    default:
+      throw new Error('Invalid state.')
+  }
+}
+
+/*
+  Generates a presentation of a given XSD file content
+  consisting of 'groups' and 'elements'.
+*/
+function _convertXSD(xsdString) {
+  const xsdDoc = DefaultDOMElement.parseXML(xsdString, 'full-doc')
+  const schemaEl = xsdDoc.find('schema')
+  if (!schemaEl) throw new Error('Could not find <schema>')
+
   // first iteration: group by elements and groups
   let children = schemaEl.getChildren()
   let state = {
@@ -39,11 +220,11 @@ function compileSchema(schemaEl) {
     const tagName = _getTagNameWithoutNS(child)
     switch(tagName) {
       case 'element': {
-        parseElement(state, child)
+        _convertElement(state, child)
         break
       }
       case 'group': {
-        parseGroup(state, child)
+        _convertGroup(state, child)
         break
       }
       default:
@@ -64,7 +245,7 @@ In JATS
 - only complexType is used
 */
 
-function parseElement(state, el) {
+function _convertElement(state, el) {
   // ATTENTION: this implementation simplified according to the comment above.
   let name = el.attr('name')
   let children = el.getChildren()
@@ -73,7 +254,7 @@ function parseElement(state, el) {
     const child = children[i]
     const tagName = _getTagNameWithoutNS(child)
     if (tagName === 'complexType') {
-      let result = parseComplexType(state, child)
+      let result = _convertComplexType(state, child)
       attributes = result.attributes
       content = result.content
     } else {
@@ -101,7 +282,7 @@ function parseElement(state, el) {
     - 'attributeGroup' and 'anyAttribute' are not used
     - complexType is the only type used in element definitions
 */
-function parseComplexType(state, el) {
+function _convertComplexType(state, el) {
   // ATTENTION: this is only a subset of XSD, which is used by JATS xsd
   const children = el.children
   let content
@@ -111,19 +292,19 @@ function parseComplexType(state, el) {
     const tagName = _getTagNameWithoutNS(child)
     switch(tagName) {
       case 'group': {
-        content = parseReference(state, child)
+        content = _convertReference(state, child)
         break
       }
       case 'choice': {
-        content = parseChoice(state, child)
+        content = _convertChoice(state, child)
         break
       }
       case 'sequence': {
-        content = parseSequence(state, child)
+        content = _convertSequence(state, child)
         break
       }
       case 'attribute': {
-        const attribute = parseAttribute(state, child)
+        const attribute = _convertAttribute(state, child)
         attributes[attribute.name] = attribute
         break
       }
@@ -158,7 +339,7 @@ In JATS
   - only 'required' and 'optional' are used for 'use'
   - simpleType is only used for enumerations, to specify the allowed values of the attribute
 */
-function parseAttribute(state, el) {
+function _convertAttribute(state, el) {
   let attributes = el.getAttributes()
   let name = attributes.get('ref') || attributes.get('name')
   let params = {}
@@ -185,7 +366,7 @@ function parseAttribute(state, el) {
   return new Attribute(name, params)
 }
 
-function parseGroup(state, el) {
+function _convertGroup(state, el) {
   let name = el.attr('name')
   let children = el.getChildren()
   let content
@@ -193,10 +374,10 @@ function parseGroup(state, el) {
     const child = children[i]
     const tagName = _getTagNameWithoutNS(child)
     if (tagName === 'choice') {
-      content = parseChoice(state, child)
+      content = _convertChoice(state, child)
       break
     } else if (tagName === 'sequence') {
-      content = parseSequence(state, child)
+      content = _convertSequence(state, child)
       break
     }
   }
@@ -205,39 +386,39 @@ function parseGroup(state, el) {
   return group
 }
 
-function parseReference(state, el) {
+function _convertReference(state, el) {
   let cardinality = _getCardinality(el)
   let targetType = _tagnameToSymbol(_getTagNameWithoutNS(el))
   let targetName = el.attr('ref')
   return new Reference(targetName, targetType, cardinality)
 }
 
-function parseChoice(state, el) {
-  return _parseContainer(state, el, CHOICE)
+function _convertChoice(state, el) {
+  return _convertContainer(state, el, CHOICE)
 }
 
-function parseSequence(state, el) {
-  return _parseContainer(state, el, SEQUENCE)
+function _convertSequence(state, el) {
+  return _convertContainer(state, el, SEQUENCE)
 }
 
-function _parseContainer(state, el, type) {
+function _convertContainer(state, el, type) {
   let cardinality = _getCardinality(el)
   let children = []
   el.children.forEach((child) => {
     const tagName = _getTagNameWithoutNS(child)
     switch(tagName) {
       case 'choice': {
-        children.push(parseChoice(state, child))
+        children.push(_convertChoice(state, child))
         break
       }
       case 'sequence': {
-        children.push(parseSequence(state, child))
+        children.push(_convertSequence(state, child))
         break
       }
       // these must be references here
       case 'element':
       case 'group': {
-        children.push(parseReference(state, child))
+        children.push(_convertReference(state, child))
         break
       }
       default:
