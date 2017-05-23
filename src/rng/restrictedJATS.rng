@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <include href="JATS-archive-oasis-article1-mathml3.rng"/>
+
+  <define name="disp-formula-model">
+    <optional>
+      <ref name="label"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="abstract"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="kwd-group"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="access.class"/>
+    </zeroOrMore>
+    <choice>
+      <ref name="x"/>
+      <ref name="preformat"/>
+      <ref name="code"/>
+      <ref name="math.class"/>
+      <ref name="graphic"/>
+      <ref name="array"/>
+      <ref name="alternatives"/>
+    </choice>
+    <zeroOrMore>
+      <choice>
+        <ref name="attrib"/>
+        <ref name="permissions"/>
+      </choice>
+    </zeroOrMore>
+  </define>
+
 </grammar>
