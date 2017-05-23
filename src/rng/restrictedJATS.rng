@@ -183,4 +183,10 @@
     </choice>
   </define>
 
+  <define name="styled-content-elements">
+    <choice>
+      <ref name="all-phrase"/>
+    </choice>
+  </define>
+
 </grammar>

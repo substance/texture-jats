@@ -1,3 +1,9 @@
+6. Restrict `<styled-content>` to pure inline content
+
+> Attention: we will not support wrapping block-level content
+
+> TODO: investigate the impact of this restriction
+
 5. Restrict `<named-content>` to pure inline content
 
 > Attention: we will not support wrapping block-level content
