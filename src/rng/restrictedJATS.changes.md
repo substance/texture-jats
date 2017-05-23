@@ -1,3 +1,14 @@
+7. Restrict `<p>` to pure inline content
+
+In JATS 1.1 `<p>` establishes a leak to inject block-level content
+(e.g. `<fig>`) into inline content.
+We are removing support for such elements, and instead splitting
+a `<p>` into multiple blocks.
+
+> TODO: To retain the same expressiveness, all parents of `<p>` should allow 
+all necessary block-level types. For this we need to find out, which
+of these block-level elements have defacto been used, e.g., within a `<fn>`
+
 6. Restrict `<styled-content>` to pure inline content
 
 > Attention: we will not support wrapping block-level content

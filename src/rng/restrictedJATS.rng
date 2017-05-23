@@ -189,4 +189,10 @@
     </choice>
   </define>
 
+  <define name="p-elements">
+    <choice>
+      <ref name="all-phrase"/>
+    </choice>
+  </define>
+
 </grammar>
