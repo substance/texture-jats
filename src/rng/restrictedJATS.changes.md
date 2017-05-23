@@ -1,3 +1,10 @@
+17. Simplify `article-link.class`
+
+We think `<xref>` is enough to create links to resources.
+- `<inline-supplementary-material>`: `ref-type="supplementary-material"`
+- `<related-article>`: `ref-type="related-article"`
+- `<related-object>`: `ref-type="related-object"`
+
 16. Redesign `<chem-struct>`
 
 We want it to be used purely structurely.
