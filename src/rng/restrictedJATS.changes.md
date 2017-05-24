@@ -1,3 +1,12 @@
+24. Restrict `<string-conf>`
+
+It looks like the original intend of this tag is a means to provide
+a textual representation of the conference. As with other tags allowing
+for mixed content we want to use it purely with phrasing content.
+
+> TODO: investigate the impact of this restricting, and evolve
+> a transformation for legacy.
+
 23. Use `<ext-link>` inline only
 
 Use `<email>` and `<uri>` in structured context.

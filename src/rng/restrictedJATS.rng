@@ -451,5 +451,8 @@
     </choice>
   </define>
 
+  <define name="string-conf-elements">
+    <ref name="simple-text"/>
+  </define>
 
 </grammar>
