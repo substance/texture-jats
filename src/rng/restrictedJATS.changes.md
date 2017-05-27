@@ -1,3 +1,10 @@
+34. Restrict `<supplement>`
+
+Turning this into a purely textual element.
+
+> Note: we think instead of defining a `<contrib-group>` inside this tag
+  an `<xref>` should be used instead.
+
 33. Restrict `<history>`
 
 Turning this into a purely structured element.

@@ -552,4 +552,10 @@
     </zeroOrMore>
   </define>
 
+  <define name="supplement-elements">
+    <choice>
+      <ref name="simple-text"/>
+    </choice>
+  </define>
+
 </grammar>
