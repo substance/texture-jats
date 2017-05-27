@@ -1,3 +1,18 @@
+35. Restrict `<speaker>`
+
+This tag seems to be used in `<speech>` elements, for the tiny headings
+denoting a speaking person such as in this example:
+
+```
+<speaker>A:</speaker>
+<p>...</p>
+<speaker>B:</speaker>
+<p>...</p>
+```
+
+We think this can be purely textual. For tagging meta-data about
+the person `<contrib>` should be used.
+
 34. Restrict `<supplement>`
 
 Turning this into a purely textual element.

@@ -558,4 +558,10 @@
     </choice>
   </define>
 
+  <define name="speaker-elements">
+    <choice>
+      <ref name="all-phrase"/>
+    </choice>
+  </define>
+
 </grammar>
