@@ -1,3 +1,7 @@
+32. Restrict `<string-name>`
+
+Turning this into a purely textual element.
+
 31. Restrict `<string-date>`
 
 Turning this into a purely textual element.

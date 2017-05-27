@@ -535,4 +535,10 @@
     </choice>
   </define>
 
+  <define name="string-name-elements">
+    <choice>
+      <ref name="all-phrase"/>
+    </choice>
+  </define>
+
 </grammar>
