@@ -1,4 +1,8 @@
-29. Restrict `<date-in-citation>`
+31. Restrict `<string-date>`
+
+Turning this into a purely textual element.
+
+30. Restrict `<date-in-citation>`
 
 Turning this into a purely structured element.
 

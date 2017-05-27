@@ -529,4 +529,10 @@
     </choice>
   </define>
 
+  <define name="string-date-elements">
+    <choice>
+      <ref name="all-phrase"/>
+    </choice>
+  </define>
+
 </grammar>
