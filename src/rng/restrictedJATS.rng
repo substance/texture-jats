@@ -345,4 +345,10 @@
     </choice>
   </define>
 
+  <define name="inline-supplementary-material">
+    <element name="inline-supplementary-material">
+      <empty />
+    </element>
+  </define>
+
 </grammar>

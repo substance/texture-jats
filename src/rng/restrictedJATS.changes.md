@@ -1,3 +1,10 @@
+18. Drop `<inline-supplementary-material>`
+
+We want to use `<supplementary-material>` and `<xref>`, instead.
+
+> TODO: investigate the impact of this restricting, and evolve
+> a transformation for legacy.
+
 17. Simplify `article-link.class`
 
 We think `<xref>` is enough to create links to resources.
