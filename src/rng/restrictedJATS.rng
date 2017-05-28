@@ -258,4 +258,16 @@
     </choice>
   </define>
 
+  <define name="person-group-model">
+    <zeroOrMore>
+      <ref name="person-group-elements"/>
+    </zeroOrMore>
+  </define>
+  <define name="person-group-elements">
+    <choice>
+      <ref name="name.class"/>
+      <ref name="person-group-info.class"/>
+    </choice>
+  </define>
+
 </grammar>
