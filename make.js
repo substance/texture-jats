@@ -44,6 +44,14 @@ b.task('tools', () => {
   })
 })
 
+b.task('pretty-print', () => {
+  b.js('./src/schema/prettyPrint.js', {
+    dest: 'tmp/prettyPrint.js',
+    format: 'cjs',
+    external: ['substance']
+  })
+})
+
 b.task('jats:compile', ['tools'], () => {
   _compile('JATS', 'data/rng/JATS-archive-oasis-article1-mathml3.rng', RNG_SEARCH_DIRS)
 })
