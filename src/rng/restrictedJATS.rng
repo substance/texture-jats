@@ -541,4 +541,15 @@
     </choice>
   </define>
 
+  <define name="history-elements">
+    <choice>
+      <ref name="date.class"/>
+    </choice>
+  </define>
+  <define name="history-model">
+    <zeroOrMore>
+      <ref name="history-elements"/>
+    </zeroOrMore>
+  </define>
+
 </grammar>

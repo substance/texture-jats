@@ -1,3 +1,7 @@
+33. Restrict `<history>`
+
+Turning this into a purely structured element.
+
 32. Restrict `<string-name>`
 
 Turning this into a purely textual element.
