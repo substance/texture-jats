@@ -1,3 +1,9 @@
+5. Restrict `<named-content>` to pure inline content
+
+> Attention: we will not support wrapping block-level content
+
+> TODO: investigate the impact of this restriction
+
 4. Redesign citations (`<element-citation>`, `<mixed-citation>`, etc.)
 
 `<element-citation>` should be purely structural,

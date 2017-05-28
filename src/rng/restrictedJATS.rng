@@ -177,4 +177,10 @@
     </element>
   </define>
 
+  <define name="named-content-elements">
+    <choice>
+      <ref name="all-phrase"/>
+    </choice>
+  </define>
+
 </grammar>
