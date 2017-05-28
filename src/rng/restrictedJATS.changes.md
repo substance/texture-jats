@@ -1,3 +1,9 @@
+49. Restrict `<abbrev>`
+
+In JATS 1.1 `<abbrev>` allows for `<def>` inline with the textual content.
+This makes the usage of `<def>` inconsistent. We suggest to use footnotes instead
+in such cases.
+
 48. Redesign `<preformat>`
 
 In JATS 1.1 `<preformat>` has mixed content.

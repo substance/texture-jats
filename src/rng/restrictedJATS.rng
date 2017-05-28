@@ -745,4 +745,10 @@
     </choice>
   </define>
 
+  <define name="abbrev-elements">
+    <choice>
+      <ref name="all-phrase"/>
+    </choice>
+  </define>
+
 </grammar>
