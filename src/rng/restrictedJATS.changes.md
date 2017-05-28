@@ -1,3 +1,7 @@
+44. Restrict `<funding-source>`
+
+Turning this into a purely textual element
+
 43. Restrict `<copyright-holder>`
 
 Turning this into a purely textual element

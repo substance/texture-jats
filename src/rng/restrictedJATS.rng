@@ -702,4 +702,22 @@
     </choice>
   </define>
 
+  <define name="funding-source">
+    <element name="funding-source">
+      <ref name="funding-source-attlist"/>
+      <zeroOrMore>
+        <choice>
+          <ref name="funding-source-elements"/>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="funding-source-elements">
+    <choice>
+      <ref name="x"/>
+      <ref name="institution"/>
+      <ref name="institution-wrap"/>
+    </choice>
+  </define>
+
 </grammar>
