@@ -646,4 +646,24 @@
     </choice>
   </define>
 
+  <define name="std-elements">
+    <choice>
+      <ref name="emphasis.class"/>
+      <ref name="phrase-content.class"/>
+      <ref name="std-organization"/>
+      <ref name="subsup.class"/>
+    </choice>
+  </define>
+  <define name="std-organization">
+    <element name="std-organization">
+      <ref name="std-organization-attlist"/>
+      <zeroOrMore>
+        <choice>
+          <text/>
+          <ref name="all-phrase"/>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+
 </grammar>

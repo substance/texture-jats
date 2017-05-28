@@ -1,3 +1,9 @@
+39. Restrict `<std>` and `<std-organization>`
+
+Turning `<std>` into a purely textual element, and `<std-organization>` into an inline-element.
+
+> Note: standard is lacking of an equally expressive, structured representation.
+
 38. No inline-definition of `<fn>`
 
 In favor of one consistent model, we remove `<fn>` from inline-elements.
