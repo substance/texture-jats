@@ -75,16 +75,6 @@
     </choice>
   </define>
 
-  <define name="textual-form-elements">
-    <choice>
-      <ref name="emphasis.class"/>
-      <ref name="inline-display-noalt.class"/>
-      <ref name="label.class"/>
-      <ref name="phrase-content.class"/>
-      <ref name="subsup.class"/>
-    </choice>
-  </define>
-
   <define name="element-citation">
     <element name="element-citation">
       <ref name="element-citation-attlist"/>
@@ -748,6 +738,15 @@
   <define name="abbrev-elements">
     <choice>
       <ref name="all-phrase"/>
+    </choice>
+  </define>
+
+  <define name="textual-form-elements">
+    <choice>
+      <ref name="emphasis.class"/>
+      <ref name="inline-display-noalt.class"/>
+      <ref name="phrase-content.class"/>
+      <ref name="subsup.class"/>
     </choice>
   </define>
 

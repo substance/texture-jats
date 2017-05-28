@@ -1,3 +1,8 @@
+50. Restrict `<textual-form>`
+
+In JATS 1.1 `<textual-form>` is a text node, but also allows for `<label>` which
+is otherwise used in structured content. We remove `<label>` from its content.
+
 49. Restrict `<abbrev>`
 
 In JATS 1.1 `<abbrev>` allows for `<def>` inline with the textual content.
