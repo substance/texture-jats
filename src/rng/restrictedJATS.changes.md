@@ -1,3 +1,7 @@
+27. Restrict `<addr-line>`
+
+We prefer not to mix structured address elements with this textual component.
+
 26. Restrict `<funding-statement>`
 
 We turn this into a purely structured element.

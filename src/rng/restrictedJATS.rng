@@ -485,4 +485,10 @@
     </choice>
   </define>
 
+  <define name="addr-line-elements">
+    <choice>
+      <ref name="simple-text"/>
+    </choice>
+  </define>
+
 </grammar>
