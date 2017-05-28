@@ -1,3 +1,7 @@
+29. Restrict `<conf-date>`
+
+Turning this into a purely structured element.
+
 28. Remove deprecated `<access-date>` and `<time-stamp>`
 
 27. Restrict `<addr-line>`

@@ -501,4 +501,18 @@
     </element>
   </define>
 
+  <define name="conf-date">
+    <element name="conf-date">
+      <ref name="conf-date-attlist"/>
+      <zeroOrMore>
+        <ref name="conf-date-elements"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="conf-date-elements">
+    <choice>
+      <ref name="date-parts.class"/>
+    </choice>
+  </define>
+
 </grammar>
