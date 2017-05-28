@@ -1,3 +1,10 @@
+8. Redesign `<aff>`
+
+We want it to be used purely structurely.
+
+> TODO: investigate the impact of this restricting, and evolve
+> a transformation for legacy.
+
 7. Restrict `<p>` to pure inline content
 
 In JATS 1.1 `<p>` establishes a leak to inject block-level content

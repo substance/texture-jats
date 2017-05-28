@@ -207,4 +207,21 @@
     </choice>
   </define>
 
+  <define name="aff-elements">
+    <choice>
+      <ref name="address.class"/>
+      <ref name="label.class"/>
+    </choice>
+  </define>
+  <define name="aff">
+    <element name="aff">
+      <ref name="aff-attlist"/>
+      <zeroOrMore>
+        <choice>
+          <ref name="aff-elements"/>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+
 </grammar>
