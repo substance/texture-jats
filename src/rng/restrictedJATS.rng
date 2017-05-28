@@ -195,4 +195,16 @@
     </choice>
   </define>
 
+  <define name="para-level">
+    <choice>
+      <ref name="block-display.class"/>
+      <ref name="block-math.class"/>
+      <ref name="list.class"/>
+      <ref name="nothing-but-para.class"/>
+      <ref name="related-article.class"/>
+      <ref name="rest-of-para.class"/>
+      <ref name="x.class"/>
+    </choice>
+  </define>
+
 </grammar>
