@@ -300,4 +300,28 @@
     </choice>
   </define>
 
+  <define name="alternatives-display.class">
+    <choice>
+      <ref name="array"/>
+      <ref name="chem-struct"/>
+      <ref name="code"/>
+      <ref name="graphic"/>
+      <ref name="media"/>
+      <ref name="preformat"/>
+      <ref name="supplementary-material"/>
+      <ref name="table"/>
+      <ref name="oasis.table"/>
+      <ref name="textual-form"/>
+    </choice>
+  </define>
+  <define name="inline-display.class">
+    <choice>
+      <!-- TODO: we need <inline-alternatives>
+      <ref name="alternatives"/>
+      !-->
+      <ref name="inline-graphic"/>
+      <ref name="private-char"/>
+    </choice>
+  </define>
+
 </grammar>

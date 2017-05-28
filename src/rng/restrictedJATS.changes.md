@@ -1,3 +1,11 @@
+15. Redesign `<alternatives>`
+
+In JATS 1.1. this has an inconsistent specification, 
+mixing inline and block-level content
+
+> TODO: we should evaluate how this is used and come up with an
+> improved model.
+
 14. Redesign `<sig-block>` and `<sig>`
 
 As of JATS 1.1 `<sig>` very much 'free' form without a good structure.
