@@ -1,3 +1,38 @@
+37. Redesign `<def-list>` et al.
+
+In our opinion there are too many degrees of freedom in the original specification of `<def-list>`.
+We want to try out a much more restrictive schema.
+
+
+> List in which each item consists of two parts: 1) a word, phrase, term, graphic, chemical structure, or equation, that
+  is paired with 2) one or more descriptions, discussions, explanations, or definitions of it.
+
+Altogether `<def-list>` seems to be sort of a 2-column table, where the left column can contain either text or a
+structured element such as an equation. The right-hand side, `<def>` can contain simple text or a sequence of
+block-level elements.
+
+> TODO: we do not understand how nesting of definition lists should work other than allowing definition lists
+  as content of the definition
+
+Proposal:
+
+```
+def-list :==
+(label?, title?, term-head?, def-head?, def-item*)
+
+def-item :==
+(label?, term, def)
+
+term :==
+( (PCDATA | phrasing content)+ | (block-level content) )?
+
+def :==
+p+
+```
+
+> Note: allowing different content than `<p>` as children of `<def>` is incompatible with JATS 1.1
+
+
 36. Redesign `<td>` and `<th>`
 
 While `<td>` and `<th>` are similar to the HTML specification,

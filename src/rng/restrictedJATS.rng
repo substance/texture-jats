@@ -588,4 +588,55 @@
     <ref name="td.content"/>
   </define>
 
+  <define name="def-list-model">
+    <optional>
+      <ref name="label"/>
+    </optional>
+    <optional>
+      <ref name="title"/>
+    </optional>
+    <optional>
+      <ref name="term-head"/>
+    </optional>
+    <optional>
+      <ref name="def-head"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="def-item.class"/>
+    </zeroOrMore>
+  </define>
+  <define name="def-item-model">
+    <optional>
+      <ref name="label"/>
+    </optional>
+    <ref name="term"/>
+    <ref name="def.class"/>
+  </define>
+  <define name="term">
+    <element name="term">
+      <ref name="term-attlist"/>
+      <ref name="term-model"/>
+    </element>
+  </define>
+  <define name="term-model">
+    <choice>
+      <oneOrMore>
+        <choice>
+          <text/>
+          <ref name="all-phrase"/>
+        </choice>
+      </oneOrMore>
+      <choice>
+        <ref name="block-math.class"/>
+        <ref name="chem-struct-wrap.class"/>
+        <ref name="simple-display-noalt.class"/>
+      </choice>
+    </choice>
+  </define>
+  <define name="def-model">
+    <oneOrMore>
+      <ref name="just-para.class"/>
+    </oneOrMore>
+  </define>
+
 </grammar>
