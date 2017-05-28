@@ -1,4 +1,8 @@
-22. Remove `<email>` and `<uri>` from `all-phrase`
+23. Use `<ext-link>` inline only
+
+Use `<email>` and `<uri>` in structured context.
+
+22. Remove `<email>` and `<uri>` from `all-phrase`, `<code>`, and `<data-title>`
 
 Use `<ext-link>` with `@ext-link-type` to create links and use these only
 in structured content.
