@@ -2,6 +2,23 @@
 <grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <include href="JATS-archive-oasis-article1-mathml3.rng"/>
 
+  <!-- Stubs -->
+  <define name="mml.math">
+    <element name="mml:math">
+    </element>
+  </define>
+  <define name="XLINK.xmlns.attrib">
+    <empty/>
+  </define>
+  <define name="oasis.table">
+    <element name="oasis:table">
+    </element>
+  </define>
+  <define name="oasis.tbody">
+    <element name="oasis:tbody">
+    </element>
+  </define>
+
   <define name="disp-formula-model">
     <optional>
       <ref name="label"/>
