@@ -1,3 +1,7 @@
+46. Restrict `<publisher-name>`
+
+Turning this into a purely textual element
+
 45. Restrict `<on-behalf-of>`
 
 Turning this into a purely textual element

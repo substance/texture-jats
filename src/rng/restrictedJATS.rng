@@ -726,4 +726,10 @@
     </choice>
   </define>
 
+  <define name="publisher-name-elements">
+    <choice>
+      <ref name="just-rendition"/>
+    </choice>
+  </define>
+
 </grammar>
