@@ -738,4 +738,11 @@
     </choice>
   </define>
 
+  <!-- TODO: find a proper, complete solution -->
+  <define name="preformat-elements">
+    <choice>
+      <ref name="all-phrase"/>
+    </choice>
+  </define>
+
 </grammar>

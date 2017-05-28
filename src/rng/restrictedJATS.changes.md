@@ -1,3 +1,15 @@
+48. Redesign `<preformat>`
+
+In JATS 1.1 `<preformat>` has mixed content.
+While the textual content seems to be the primary use-case, there are some
+structural elements allowed: `<alt-text>`, `<long-desc>`, `<attrib>`, and `<permissions>`.
+
+We would prefer a way to separate these two groups of content.
+For now, we disable the structural content until we have found a proper way to specify the mixed version.
+
+> TODO: find a proper way to specify such not-so-mixed elements without introducing
+> For example, `(alt-text?,long-desc?,attrib?,permissions?,(PCDATA | ...)*)`
+
 47. Restrict `<license-p>`
 
 Removing `<price>` as annotation, which is used in structured content by `<product>`
@@ -379,7 +391,7 @@ Wrap the source in some way:
 
 ```
 <disp-formula>
-    <preformat>f(x) = x<sup>2</sup</preformat>
+    <preformat>f(x) = x<sup>2</sup></preformat>
 </disp-formula>
 ```
 
