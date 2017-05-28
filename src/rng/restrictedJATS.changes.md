@@ -1,3 +1,7 @@
+25. Restrict `<title>`
+
+Should not allow for inline citations.
+
 24. Restrict `<string-conf>`
 
 It looks like the original intend of this tag is a means to provide
