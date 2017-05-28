@@ -491,4 +491,14 @@
     </choice>
   </define>
 
+  <!-- stub out deprecated elements -->
+  <define name="access-date">
+    <element name="access-date">
+    </element>
+  </define>
+  <define name="time-stamp">
+    <element name="time-stamp">
+    </element>
+  </define>
+
 </grammar>

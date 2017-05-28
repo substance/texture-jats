@@ -1,3 +1,5 @@
+28. Remove deprecated `<access-date>` and `<time-stamp>`
+
 27. Restrict `<addr-line>`
 
 We prefer not to mix structured address elements with this textual component.
