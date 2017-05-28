@@ -1,3 +1,13 @@
+38. No inline-definition of `<fn>`
+
+In favor of one consistent model, we remove `<fn>` from inline-elements.
+Instead we prefer to define `<fn>` in `<fn-group>` as part of `<front>` (like other resources)
+and use `<xref>` to create a link within the text.
+
+> Note: this will cause a lot of problems with existing JATS files, as `<fn>` is used
+  as inline element a lot. Still, it should be easy to fix this automatically,
+  by moving all `<fn>s` to `<fn-group>s` and inserting `<xref>s` (if not yet there)
+
 37. Redesign `<def-list>` et al.
 
 In our opinion there are too many degrees of freedom in the original specification of `<def-list>`.

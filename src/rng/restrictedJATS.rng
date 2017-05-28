@@ -639,4 +639,11 @@
     </oneOrMore>
   </define>
 
+  <define name="simple-link.class">
+    <choice>
+      <ref name="target"/>
+      <ref name="xref"/>
+    </choice>
+  </define>
+
 </grammar>
