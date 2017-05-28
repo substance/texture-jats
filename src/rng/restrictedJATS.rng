@@ -479,4 +479,10 @@
     </choice>
   </define>
 
+  <define name="funding-statement-elements">
+    <choice>
+      <ref name="all-phrase"/>
+    </choice>
+  </define>
+
 </grammar>

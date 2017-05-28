@@ -1,3 +1,28 @@
+26. Restrict `<funding-statement>`
+
+We turn this into a purely structured element.
+It would be nice to have a dedicated wrapper element for the description.
+For compatibility with JATS 1.1 we will use `<alternatives>` to wrap the description.
+
+Proposal:
+```
+<funding-statement>
+  <description>...</description>
+  <award-id></award-id>
+</funding-statement>
+```
+
+Workaround:
+
+```
+<funding-statement>
+  <alternatives>
+    <textual-form>...</textual-form>
+  </alternatives>
+  <award-id></award-id>
+</funding-statement>
+```
+
 25. Restrict `<title>`
 
 Should not allow for inline citations.
