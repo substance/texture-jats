@@ -235,4 +235,20 @@
     </choice>
   </define>
 
+  <define name="corresp">
+    <element name="corresp">
+      <ref name="corresp-attlist"/>
+      <zeroOrMore>
+        <ref name="corresp-elements"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="corresp-elements">
+    <choice>
+      <ref name="address.class"/>
+      <ref name="label.class"/>
+      <ref name="email"/>
+    </choice>
+  </define>
+
 </grammar>

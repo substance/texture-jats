@@ -1,3 +1,10 @@
+11. Restrict `<corresp>`
+
+We want it to be used purely structurely.
+
+> TODO: investigate the impact of this restricting, and evolve
+> a transformation for legacy.
+
 10. Restrict `<conf-loc>`
 
 All examples in JATS 1.1 indicate that this is used primarily with textual content.
