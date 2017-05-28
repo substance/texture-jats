@@ -1,3 +1,7 @@
+41. Restrict `<principal-investigator>`
+
+Turning this into a purely structural element
+
 40. Restrict `<principal-award-recipient>`
 
 Turning this into a purely structural element

@@ -676,6 +676,14 @@
       </zeroOrMore>
     </element>
   </define>
+
+  <define name="principal-investigator">
+    <element name="principal-investigator">
+      <ref name="principal-investigator-attlist"/>
+      <zeroOrMore>
+        <choice>
+          <ref name="principal-investigator-elements"/>
+        </choice>
       </zeroOrMore>
     </element>
   </define>
