@@ -1,3 +1,16 @@
+4. Redesign citations (`<element-citation>`, `<mixed-citation>`, etc.)
+
+`<element-citation>` should be purely structural,
+not allowing for inline content.
+
+`<mixed-citation>` is in our sense redundant to a 
+combination of `<element-citation>` plus `<x>`.
+
+Removing `<nlm-citation>`.
+
+For compatibility with JATS 1.1 we need to transform `<mixed-citation>`
+into `<element-citation>` if not present, and replace it with a `<x>`.
+
 3. Remove `math.class` from general phrase content
 
 Use `<disp-formula>` and `<inline-formula>` instead.

@@ -141,4 +141,40 @@
     </choice>
   </define>
 
+  <define name="element-citation">
+    <element name="element-citation">
+      <ref name="element-citation-attlist"/>
+      <oneOrMore>
+        <choice>
+          <ref name="related-article"/>
+          <ref name="related-object"/>
+          <ref name="citation-additions.class"/>
+          <ref name="label.class"/>
+          <ref name="references.class"/>
+        </choice>
+      </oneOrMore>
+    </element>
+  </define>
+
+  <define name="citation.class">
+    <choice>
+      <ref name="citation-alternatives"/>
+      <ref name="element-citation"/>
+    </choice>
+  </define>
+
+  <define name="citation-minus-alt.class">
+    <choice>
+      <ref name="element-citation"/>
+    </choice>
+  </define>
+
+  <define name="mixed-citation">
+    <element name="mixed-citation">
+      <zeroOrMore>
+        <text />
+      </zeroOrMore>
+    </element>
+  </define>
+
 </grammar>
