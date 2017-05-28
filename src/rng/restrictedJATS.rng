@@ -564,4 +564,28 @@
     </choice>
   </define>
 
+  <define name="td.content">
+    <choice>
+      <zeroOrMore>
+        <choice>
+          <text/>
+          <ref name="all-phrase"/>
+          <ref name="break.class"/>
+        </choice>
+      </zeroOrMore>
+      <oneOrMore>
+        <choice>
+          <ref name="block-math.class"/>
+          <ref name="chem-struct-wrap.class"/>
+          <ref name="list.class"/>
+          <ref name="nothing-but-para.class"/>
+          <ref name="simple-display-noalt.class"/>
+        </choice>
+      </oneOrMore>
+    </choice>
+  </define>
+  <define name="th.content">
+    <ref name="td.content"/>
+  </define>
+
 </grammar>

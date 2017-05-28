@@ -1,3 +1,26 @@
+36. Redesign `<td>` and `<th>`
+
+While `<td>` and `<th>` are similar to the HTML specification,
+we want to introduce a slightly stricter schema, separating phrasing content
+from structural content.
+
+For mixed content only those elements are allowed, which can occur in inline content,
+such as annotations, anchors, and inline-elements.
+
+```
+<td>123<bold>456</bold>789</td>
+```
+
+On the other hand, only block-level elements are allowed to occur together
+
+```
+<td>
+  <p>...</p>
+  <list>...</list>
+  <p>...</p>
+</td>
+```
+
 35. Restrict `<speaker>`
 
 This tag seems to be used in `<speech>` elements, for the tiny headings
