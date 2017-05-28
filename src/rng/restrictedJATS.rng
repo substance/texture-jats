@@ -43,4 +43,102 @@
     </choice>
   </define>
 
+  <define name="all-phrase">
+    <choice>
+      <ref name="address-link.class"/>
+      <ref name="article-link.class"/>
+      <ref name="appearance.class"/>
+      <ref name="emphasis.class"/>
+      <ref name="inline-display.class"/>
+      <ref name="inline-math.class"/>
+      <ref name="phrase.class"/>
+      <ref name="simple-link.class"/>
+      <ref name="subsup.class"/>
+      <ref name="x.class"/>
+    </choice>
+  </define>
+
+  <define name="collab-elements">
+    <choice>
+      <ref name="article-link.class"/>
+      <ref name="address.class"/>
+      <ref name="appearance.class"/>
+      <ref name="break.class"/>
+      <ref name="contrib-group.class"/>
+      <ref name="contrib-info.class"/>
+      <ref name="emphasis.class"/>
+      <ref name="inline-display.class"/>
+      <ref name="inline-math.class"/>
+      <ref name="phrase.class"/>
+      <ref name="subsup.class"/>
+      <ref name="x.class"/>
+    </choice>
+  </define>
+
+  <define name="product-elements">
+    <choice>
+      <ref name="article-link.class"/>
+      <ref name="appearance.class"/>
+      <ref name="break.class"/>
+      <ref name="citation-additions.class"/>
+      <ref name="emphasis.class"/>
+      <ref name="inline-display.class"/>
+      <ref name="inline-math.class"/>
+      <ref name="label.class"/>
+      <ref name="phrase.class"/>
+      <ref name="references.class"/>
+      <ref name="simple-link.class"/>
+      <ref name="subsup.class"/>
+      <ref name="x.class"/>
+      <ref name="price.class"/>
+    </choice>
+  </define>
+
+  <define name="related-article-elements">
+    <choice>
+      <ref name="article-link.class"/>
+      <ref name="appearance.class"/>
+      <ref name="break.class"/>
+      <ref name="citation-additions.class"/>
+      <ref name="emphasis.class"/>
+      <ref name="inline-display.class"/>
+      <ref name="inline-math.class"/>
+      <ref name="label.class"/>
+      <ref name="phrase.class"/>
+      <ref name="references.class"/>
+      <ref name="simple-link.class"/>
+      <ref name="subsup.class"/>
+      <ref name="x.class"/>
+      <ref name="journal-id.class"/>
+    </choice>
+  </define>
+
+  <define name="related-object-elements">
+    <choice>
+      <ref name="article-link.class"/>
+      <ref name="appearance.class"/>
+      <ref name="break.class"/>
+      <ref name="citation-additions.class"/>
+      <ref name="emphasis.class"/>
+      <ref name="inline-display.class"/>
+      <ref name="inline-math.class"/>
+      <ref name="label.class"/>
+      <ref name="phrase.class"/>
+      <ref name="references.class"/>
+      <ref name="simple-link.class"/>
+      <ref name="subsup.class"/>
+      <ref name="x.class"/>
+    </choice>
+  </define>
+
+  <define name="textual-form-elements">
+    <choice>
+      <ref name="emphasis.class"/>
+      <ref name="inline-display-noalt.class"/>
+      <ref name="label.class"/>
+      <ref name="phrase-content.class"/>
+      <ref name="subsup.class"/>
+    </choice>
+  </define>
+
 </grammar>

@@ -1,3 +1,7 @@
+3. Remove `math.class` from general phrase content
+
+Use `<disp-formula>` and `<inline-formula>` instead.
+
 2. Redesigning `<inline-formula>`
 
 Similar to the changes for `<disp-formula>`.
