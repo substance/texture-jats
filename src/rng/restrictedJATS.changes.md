@@ -1,3 +1,8 @@
+20. Restrict `<related-object>`
+
+We want it to be used only in `<article-meta>`, and references using `<xref>`.
+It should itself be a purely structural element.
+
 19. Restrict `<related-article>`
 
 We want it to be used only in `<article-meta>`, and references using `<xref>`.
