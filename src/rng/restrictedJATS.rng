@@ -515,4 +515,18 @@
     </choice>
   </define>
 
+  <define name="date-in-citation">
+    <element name="date-in-citation">
+      <ref name="date-in-citation-attlist"/>
+      <zeroOrMore>
+        <ref name="date-in-citation-elements"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="date-in-citation-elements">
+    <choice>
+      <ref name="date-parts.class"/>
+    </choice>
+  </define>
+
 </grammar>

@@ -1,3 +1,7 @@
+29. Restrict `<date-in-citation>`
+
+Turning this into a purely structured element.
+
 29. Restrict `<conf-date>`
 
 Turning this into a purely structured element.
