@@ -1,11 +1,26 @@
+21. Restrict `<product>`
+
+We want it to be used purely structurely.
+
+For a rendered version of the product record we will use
+
+```
+<alternatives>
+  <textual-form>...</textual-form>
+</alternatives>
+```
+
+> TODO: investigate the impact of this restricting, and evolve
+> a transformation for legacy.
+
 20. Restrict `<related-object>`
 
-We want it to be used only in `<article-meta>`, and references using `<xref>`.
+We want it to be used only in `<article-meta>`, and referenced using `<xref>`.
 It should itself be a purely structural element.
 
 19. Restrict `<related-article>`
 
-We want it to be used only in `<article-meta>`, and references using `<xref>`.
+We want it to be used only in `<article-meta>`, and referenced using `<xref>`.
 It should itself be a purely structural element.
 
 18. Drop `<inline-supplementary-material>`
@@ -31,7 +46,7 @@ We want it to be used purely structurely.
 
 15. Redesign `<alternatives>`
 
-In JATS 1.1. this has an inconsistent specification, 
+In JATS 1.1. this has an inconsistent specification,
 mixing inline and block-level content
 
 > TODO: we should evaluate how this is used and come up with an
@@ -94,7 +109,7 @@ In JATS 1.1 `<p>` establishes a leak to inject block-level content
 We are removing support for such elements, and instead splitting
 a `<p>` into multiple blocks.
 
-> TODO: To retain the same expressiveness, all parents of `<p>` should allow 
+> TODO: To retain the same expressiveness, all parents of `<p>` should allow
 all necessary block-level types. For this we need to find out, which
 of these block-level elements have defacto been used, e.g., within a `<fn>`
 
@@ -115,7 +130,7 @@ of these block-level elements have defacto been used, e.g., within a `<fn>`
 `<element-citation>` should be purely structural,
 not allowing for inline content.
 
-`<mixed-citation>` is in our sense redundant to a 
+`<mixed-citation>` is in our sense redundant to a
 combination of `<element-citation>` plus `<x>`.
 
 Removing `<nlm-citation>`.
@@ -139,7 +154,7 @@ Proposal:
 1. Redesigning `<disp-formula>`
 
 `<disp-formula>` allows for unstructured content, probably to make it more
-convenient to write manually. Instead, this element could be defined 
+convenient to write manually. Instead, this element could be defined
 much more restrictively in purely structural way.
 
 Proposal:
@@ -148,7 +163,7 @@ label?,
 abstract*,
 kwd-group*,
 (alt-text | long-desc)*,
-(x | preformat | code | mml:math | text-math | graphic | array | alternatives), 
+(x | preformat | code | mml:math | text-math | graphic | array | alternatives),
 (attrib | permissions)*
 ```
 
