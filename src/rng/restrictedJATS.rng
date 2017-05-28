@@ -32,4 +32,15 @@
     </zeroOrMore>
   </define>
 
+  <define name="inline-formula-model">
+    <choice>
+      <ref name="x"/>
+      <ref name="preformat"/>
+      <ref name="code"/>
+      <ref name="math.class"/>
+      <ref name="graphic"/>
+      <ref name="alternatives"/>
+    </choice>
+  </define>
+
 </grammar>

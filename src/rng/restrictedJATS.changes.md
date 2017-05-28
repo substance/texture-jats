@@ -1,4 +1,13 @@
-# Redesigning `<disp-formula>`
+2. Redesigning `<inline-formula>`
+
+Similar to the changes for `<disp-formula>`.
+
+Proposal:
+```
+(x | preformat | code | mml:math | tex-math | graphic | alternatives)
+```
+
+1. Redesigning `<disp-formula>`
 
 `<disp-formula>` allows for unstructured content, probably to make it more
 convenient to write manually. Instead, this element could be defined 
