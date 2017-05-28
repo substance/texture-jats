@@ -666,4 +666,18 @@
     </element>
   </define>
 
+  <define name="principal-award-recipient">
+    <element name="principal-award-recipient">
+      <ref name="principal-award-recipient-attlist"/>
+      <zeroOrMore>
+        <choice>
+          <ref name="principal-award-recipient-elements"/>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+      </zeroOrMore>
+    </element>
+  </define>
+
 </grammar>

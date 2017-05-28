@@ -1,3 +1,7 @@
+40. Restrict `<principal-award-recipient>`
+
+Turning this into a purely structural element
+
 39. Restrict `<std>` and `<std-organization>`
 
 Turning `<std>` into a purely textual element, and `<std-organization>` into an inline-element.
