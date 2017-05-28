@@ -77,25 +77,6 @@
     </choice>
   </define>
 
-  <define name="related-article-elements">
-    <choice>
-      <ref name="article-link.class"/>
-      <ref name="appearance.class"/>
-      <ref name="break.class"/>
-      <ref name="citation-additions.class"/>
-      <ref name="emphasis.class"/>
-      <ref name="inline-display.class"/>
-      <ref name="inline-math.class"/>
-      <ref name="label.class"/>
-      <ref name="phrase.class"/>
-      <ref name="references.class"/>
-      <ref name="simple-link.class"/>
-      <ref name="subsup.class"/>
-      <ref name="x.class"/>
-      <ref name="journal-id.class"/>
-    </choice>
-  </define>
-
   <define name="related-object-elements">
     <choice>
       <ref name="article-link.class"/>
@@ -349,6 +330,23 @@
     <element name="inline-supplementary-material">
       <empty />
     </element>
+  </define>
+
+  <define name="related-article">
+    <element name="related-article">
+      <ref name="related-article-attlist"/>
+      <zeroOrMore>
+        <ref name="related-article-elements"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="related-article-elements">
+    <choice>
+      <ref name="citation-additions.class"/>
+      <ref name="label.class"/>
+      <ref name="references.class"/>
+      <ref name="journal-id.class"/>
+    </choice>
   </define>
 
 </grammar>

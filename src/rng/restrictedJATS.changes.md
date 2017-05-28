@@ -1,3 +1,8 @@
+19. Restrict `<related-article>`
+
+We want it to be used only in `<article-meta>`, and references using `<xref>`.
+It should itself be a purely structural element.
+
 18. Drop `<inline-supplementary-material>`
 
 We want to use `<supplementary-material>` and `<xref>`, instead.
