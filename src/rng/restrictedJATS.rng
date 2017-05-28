@@ -694,4 +694,12 @@
     </choice>
   </define>
 
+  <!-- TODO: why not allow simple-text here? -->
+  <define name="copyright-holder-elements">
+    <choice>
+      <ref name="subsup.class"/>
+      <ref name="x.class"/>
+    </choice>
+  </define>
+
 </grammar>

@@ -1,3 +1,7 @@
+43. Restrict `<copyright-holder>`
+
+Turning this into a purely textual element
+
 42. Restrict `<conf-sponsor>`
 
 Turning this into a purely textual element
