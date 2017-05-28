@@ -1,3 +1,8 @@
+22. Remove `<email>` and `<uri>` from `all-phrase`
+
+Use `<ext-link>` with `@ext-link-type` to create links and use these only
+in structured content.
+
 21. Restrict `<product>`
 
 We want it to be used purely structurely.
