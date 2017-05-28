@@ -1,3 +1,10 @@
+16. Redesign `<chem-struct>`
+
+We want it to be used purely structurely.
+
+> TODO: investigate the impact of this restricting, and evolve
+> a transformation for legacy.
+
 15. Redesign `<alternatives>`
 
 In JATS 1.1. this has an inconsistent specification, 

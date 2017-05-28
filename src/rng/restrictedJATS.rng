@@ -324,4 +324,19 @@
     </choice>
   </define>
 
+  <define name="chem-struct-model">
+    <zeroOrMore>
+      <ref name="chem-struct-elements"/>
+    </zeroOrMore>
+  </define>
+  <define name="chem-struct-elements">
+    <choice>
+      <ref name="access.class"/>
+      <ref name="id.class"/>
+      <ref name="label.class"/>
+      <ref name="list.class"/>
+      <ref name="simple-display-noalt.class"/>
+    </choice>
+  </define>
+
 </grammar>
