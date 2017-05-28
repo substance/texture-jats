@@ -1,3 +1,9 @@
+47. Restrict `<license-p>`
+
+Removing `<price>` as annotation, which is used in structured content by `<product>`
+
+For compatibility with JATS, we will convert `<price>` into `<named-content>`.
+
 46. Restrict `<publisher-name>`
 
 Turning this into a purely textual element

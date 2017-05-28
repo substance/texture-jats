@@ -732,4 +732,10 @@
     </choice>
   </define>
 
+  <define name="license-p-elements">
+    <choice>
+      <ref name="p-elements"/>
+    </choice>
+  </define>
+
 </grammar>
