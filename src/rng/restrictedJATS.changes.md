@@ -1,3 +1,10 @@
+12. Restrict `<publisher-loc>`
+
+This seems to be intended for textual content mainly.
+
+> TODO: investigate the impact of this restricting, and evolve
+> a transformation for legacy.
+
 11. Restrict `<corresp>`
 
 We want it to be used purely structurely.
