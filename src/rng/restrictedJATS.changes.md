@@ -1,3 +1,7 @@
+42. Restrict `<conf-sponsor>`
+
+Turning this into a purely textual element
+
 41. Restrict `<principal-investigator>`
 
 Turning this into a purely structural element

@@ -688,4 +688,10 @@
     </element>
   </define>
 
+  <define name="conf-sponsor-elements">
+    <choice>
+      <ref name="simple-text"/>
+    </choice>
+  </define>
+
 </grammar>
