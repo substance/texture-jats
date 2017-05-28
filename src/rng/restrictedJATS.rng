@@ -720,4 +720,10 @@
     </choice>
   </define>
 
+  <define name="on-behalf-of-elements">
+    <choice>
+      <ref name="rendition-plus"/>
+    </choice>
+  </define>
+
 </grammar>

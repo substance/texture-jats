@@ -1,3 +1,7 @@
+45. Restrict `<on-behalf-of>`
+
+Turning this into a purely textual element
+
 44. Restrict `<funding-source>`
 
 Turning this into a purely textual element
