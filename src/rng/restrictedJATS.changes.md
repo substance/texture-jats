@@ -1,3 +1,8 @@
+9. Redesign `<collab>`
+
+All examples in JATS 1.1 indicate that this is used primarily with textual content.
+
+
 8. Redesign `<aff>`
 
 We want it to be used purely structurely.

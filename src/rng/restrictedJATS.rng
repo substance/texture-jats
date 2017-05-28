@@ -58,23 +58,6 @@
     </choice>
   </define>
 
-  <define name="collab-elements">
-    <choice>
-      <ref name="article-link.class"/>
-      <ref name="address.class"/>
-      <ref name="appearance.class"/>
-      <ref name="break.class"/>
-      <ref name="contrib-group.class"/>
-      <ref name="contrib-info.class"/>
-      <ref name="emphasis.class"/>
-      <ref name="inline-display.class"/>
-      <ref name="inline-math.class"/>
-      <ref name="phrase.class"/>
-      <ref name="subsup.class"/>
-      <ref name="x.class"/>
-    </choice>
-  </define>
-
   <define name="product-elements">
     <choice>
       <ref name="article-link.class"/>
@@ -223,5 +206,20 @@
       </zeroOrMore>
     </element>
   </define>
+
+  <define name="collab-elements">
+    <choice>
+      <ref name="article-link.class"/>
+      <ref name="appearance.class"/>
+      <ref name="break.class"/>
+      <ref name="emphasis.class"/>
+      <ref name="inline-display.class"/>
+      <ref name="inline-math.class"/>
+      <ref name="phrase.class"/>
+      <ref name="subsup.class"/>
+      <ref name="x.class"/>
+    </choice>
+  </define>
+
 
 </grammar>
