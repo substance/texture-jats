@@ -221,5 +221,18 @@
     </choice>
   </define>
 
+  <define name="conf-loc">
+    <element name="conf-loc">
+      <ref name="conf-loc-attlist"/>
+      <zeroOrMore>
+        <ref name="conf-loc-elements"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="conf-loc-elements">
+    <choice>
+      <ref name="address.class"/>
+    </choice>
+  </define>
 
 </grammar>
