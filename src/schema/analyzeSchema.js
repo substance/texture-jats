@@ -23,26 +23,41 @@ function analyze(xmlSchema) {
     Object.assign(elementSchema, {
       type: 'element',
       children: {},
-      parents: {}
+      parents: {},
     })
     return elementSchema
   })
-  let result = {}
-  for (let i = 0; i < elementSchemas.length; i++) {
-    const elementSchema = elementSchemas[i]
+  // extract records
+  elementSchemas.forEach((elementSchema) => {
     _analyzeElementSchema(elementSchema, xmlSchema)
-    let r = {
-      name: elementSchema.name,
-      type: elementSchema.type,
-      children: Object.keys(elementSchema.children),
-      parents: Object.keys(elementSchema.parents),
-    }
-    if (elementSchema.usedInlineBy) {
-      r['usedInlineBy'] = elementSchema.usedInlineBy
-    }
-    result[r.name] = r
-  }
-  return result
+  })
+  // post-processing
+  let records = {}
+  elementSchemas.forEach((elementSchema) => {
+    let r = ['name', 'type', 'children', 'parents', 'siblings',
+      'isStructured', 'isText',
+      'usedInlineBy', 'usedStructuredBy'
+    ].reduce((m, n) => {
+      if (elementSchema[n]) {
+        m[n] = elementSchema[n]
+      }
+      return m
+    }, {})
+    records[r.name] = r
+  })
+  tagNames.forEach((name) => {
+    const r = records[name]
+    // link the records in parent/children maps
+    r.children = Object.keys(r.children).reduce((m, n) => {
+      m[n] = records[n]
+      return m
+    }, {})
+    r.parents = Object.keys(r.parents).reduce((m, n) => {
+      m[n] = records[n]
+      return m
+    }, {})
+  })
+  return records
 }
 
 function _analyzeElementSchema(elementSchema, xmlSchema) {
@@ -84,26 +99,47 @@ function _analyzeElementSchema(elementSchema, xmlSchema) {
         _children[token] = true
       }
     }
-    // if there is TEXT allowed on this path
-    // mark all recorded tags as inline
-    if (_children[TEXT]) {
-      hasText = true
+    {
+      // if there is TEXT allowed on this path
+      // mark all recorded tags as inline
       const tokens = Object.keys(_children)
+      if (_children[TEXT]) {
+        hasText = true
+        for (let i = 0; i < tokens.length; i++) {
+          const token = tokens[i]
+          const childSchema = xmlSchema.getElementSchema(token)
+          if (!childSchema) continue
+          if (!childSchema.usedInlineBy) childSchema.usedInlineBy = {}
+          childSchema.usedInlineBy[name] = true
+        }
+      } else if (Object.keys(_children).length > 0) {
+        hasElements = true
+        for (let i = 0; i < tokens.length; i++) {
+          const token = tokens[i]
+          const childSchema = xmlSchema.getElementSchema(token)
+          if (!childSchema) continue
+          if (!childSchema.usedStructuredBy) childSchema.usedStructuredBy = {}
+          childSchema.usedStructuredBy[name] = true
+        }
+      }
       for (let i = 0; i < tokens.length; i++) {
         const token = tokens[i]
         const childSchema = xmlSchema.getElementSchema(token)
         if (!childSchema) continue
-        if (!childSchema.usedInlineBy) childSchema.usedInlineBy = {}
-        childSchema.usedInlineBy[elementSchema.name] = true
+        if (!childSchema.siblings) childSchema.siblings = {}
+        childSchema.siblings[name] = tokens
       }
-    } else if (Object.keys(_children).length > 0) {
-      hasElements = true
     }
   })
+  if (hasElements) {
+    elementSchema.isStructured = true
+  }
+  if (hasText) {
+    elementSchema.isText = true
+  }
+  // automatic classification
   if (hasElements && hasText) {
     elementSchema.type = 'hybrid'
-  } else if (hasElements) {
-    elementSchema.type = 'element'
   } else if (hasText) {
     elementSchema.type = 'text'
   }

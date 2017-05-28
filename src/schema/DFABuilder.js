@@ -152,43 +152,24 @@ export default class DFABuilder {
   }
 
   /*
-    Creates a new DFA representing (...)* which is derived
-    by replacing all transitions to END with transitions to START
-    and adding an EPSILON transition from START to END
+    Creates a new DFA representing (A)*
 
     ```
-    Expression: A*
+    Expression: A* = (A+)?
 
-           /-[A]-\
-           |     |
-            \   /
-             v /
-    Graph:    S  -- ε -->  E
+                       /-[A]-\
+                       |     |
+                        \   /
+                         v /
+    Graph:   S -- [A] --> 1  -- ε -->  E
+              \                    /
+               \   --    ε   --   /
 
     ```
   */
   kleene() {
-    let dfa
-    if (this.transitions) {
-      let t1 = cloneDeep(this.transitions)
-      // there might exist an EPSILON transition already
-      // which we must remove to fulfill our internal
-      // assumption that there is only one EPSILON transition from
-      // START going to END
-      delete t1[START][EPSILON]
-      forEach(t1, (T) => {
-        forEach(T, (to, token) => {
-          if (to === END) {
-            T[token] = START
-          }
-        })
-      })
-      dfa = new DFABuilder(t1)
-      dfa.addTransition(START, END, EPSILON)
-    } else {
-      dfa = new DFABuilder(cloneDeep(this.transitions))
-    }
-    return dfa
+    let dfa = this.plus()
+    return dfa.optional()
   }
 
   /*
@@ -207,8 +188,40 @@ export default class DFABuilder {
     ```
   */
   plus() {
-    let dfa = new DFABuilder(cloneDeep(this.transitions))
-    return dfa.append(this.kleene())
+    let dfa
+    if (this.transitions) {
+      let t1 = cloneDeep(this.transitions)
+      // there might exist an EPSILON transition already
+      // which we must remove to fulfill our internal
+      // assumption that there is only one EPSILON transition from
+      // START going to END
+      const isOptional = Boolean(t1[START][EPSILON])
+      delete t1[START][EPSILON]
+      // introduce a new state
+      // and let all 'ending' edges point to new state
+      let newState = uuid()
+      forEach(t1, (T) => {
+        forEach(T, (to, token) => {
+          if (to === END) {
+            T[token] = newState
+          }
+        })
+      })
+      // add 'ending' EPSILON transition
+      _addTransition(t1, newState, END, EPSILON)
+      // copy all starting edges
+      forEach(t1[START], (to, token) => {
+        _addTransition(t1, newState, to, token)
+      })
+      // recover 'optional'
+      if (isOptional) {
+        _addTransition(t1, START, END, EPSILON)
+      }
+      dfa = new DFABuilder(t1)
+    } else {
+      dfa = new DFABuilder(cloneDeep(this.transitions))
+    }
+    return dfa
   }
 
   toJSON() {

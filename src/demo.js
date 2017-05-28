@@ -9,15 +9,26 @@ import compileRNG from './schema/compileRNG'
 import serializeSchema from './schema/serializeSchema'
 import deserializeSchema from './schema/deserializeSchema'
 import analyzeSchema from './schema/analyzeSchema'
+import checkSchema from './schema/checkSchema'
+
+const RNG_SEARCH_DIRS = [
+  'data/rng', 'src/rng'
+]
 
 window.onload = function() {
   // _compileXSD()
   // validatorDemo()
   // importDemo()
-  let schema = compileRNG(vfs, 'data/rng', 'JATS-archive-oasis-article1-mathml3.rng')
-  let serialized = serializeSchema(schema)
-  let deserialized = deserializeSchema(serialized)
-  let info = analyzeSchema(deserialized)
+  // let schema = compileRNG(vfs, 'data/rng', 'JATS-archive-oasis-article1-mathml3.rng')
+  // let serialized = serializeSchema(schema)
+  // let deserialized = deserializeSchema(serialized)
+  // let info = analyzeSchema(deserialized)
+
+  const CLASSIFICATION = 'src/rng/restrictedJATS.classification.json'
+  const classification = JSON.parse(vfs.readFileSync(CLASSIFICATION))
+  const xmlSchema = compileRNG(vfs, RNG_SEARCH_DIRS, 'restrictedJATS.rng', classification)
+  const issues = checkSchema(xmlSchema)
+
   debugger
 }
 

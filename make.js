@@ -4,7 +4,7 @@
 
 /* global __dirname */
 
-const { map } = require('substance')
+const { forEach } = require('substance')
 const b = require('substance-bundler')
 const vfs = require('substance-bundler/extensions/vfs')
 const fs = require('fs')
@@ -48,52 +48,37 @@ b.task('jats:compile', ['tools'], () => {
   _compile('JATS', 'data/rng/JATS-archive-oasis-article1-mathml3.rng', RNG_SEARCH_DIRS)
 })
 
-b.task('jats:classify', ['jats:compile'], () => {
-  _classify('JATS')
-})
-
 b.task('restricted-jats:compile', ['tools'], () => {
-  _compile('restrictedJATS', 'src/rng/restrictedJATS.rng', RNG_SEARCH_DIRS)
+  _compile('restrictedJATS', 'src/rng/restrictedJATS.rng', RNG_SEARCH_DIRS, 'src/rng', 'pretty')
 })
 
-b.task('restricted-jats:classify', ['restricted-jats:compile'], () => {
-  _classify('restrictedJATS')
-})
-
-
-function _compile(name, src, searchDirs) {
-  const DEST = `generated/${name}.schema.json`
+function _compile(name, src, searchDirs, baseDir='generated', pretty=false) {
+  const DEST = `${baseDir}/${name}.schema.json`
+  const CLASSIFICATION = `${baseDir}/${name}.classification.json`
+  const ISSUES = `${baseDir}/${name}.issues.txt`
   const entry = path.basename(src)
-  b.custom(`Compiling ${name}...`, {
+  b.custom(`Compiling schema '${name}'...`, {
     src: src,
     dest: DEST,
     execute() {
-      const { compileRNG, serializeSchema } = require('./tmp/tools')
-      const xmlSchema = compileRNG(fs, searchDirs, entry)
-      const serializedSchema = JSON.stringify(serializeSchema(xmlSchema))
+      const { compileRNG, serializeSchema, checkSchema } = require('./tmp/tools')
+      let manualClassification
+      if (fs.existsSync(CLASSIFICATION)) {
+        manualClassification = JSON.parse(fs.readFileSync(CLASSIFICATION))
+      }
+      const xmlSchema = compileRNG(fs, searchDirs, entry, manualClassification)
+      let serializedSchema
+      if (pretty) {
+        serializedSchema = JSON.stringify(serializeSchema(xmlSchema), 0, 2)
+      } else {
+        serializedSchema = JSON.stringify(serializeSchema(xmlSchema))
+      }
       b.writeSync(DEST, serializedSchema)
-    }
-  })
-}
 
-function _classify(name) {
-  const SRC = `generated/${name}.schema.json`
-  const DEST = `generated/${name}.classification.json`
-  b.custom(`Classifying ${name}...`, {
-    src: SRC,
-    dest: DEST,
-    execute() {
-      const { deserializeSchema, analyzeSchema } = require('./tmp/tools')
-      const schemaData = JSON.parse(fs.readFileSync(SRC))
-      const xmlSchema = deserializeSchema(schemaData)
-      const info = analyzeSchema(xmlSchema)
-      const classification = map(info, (r) => {
-        return {
-          name: r.name,
-          type: r.type
-        }
-      })
-      b.writeSync(DEST, JSON.stringify(classification,0,2))
+      // now check the schema for issues
+      const issues = checkSchema(xmlSchema)
+      const issuesData = [`${issues.length} issues:`, ''].concat(issues).join('\n')
+      b.writeSync(ISSUES, issuesData)
     }
   })
 }

@@ -1,13 +1,14 @@
-import { DefaultDOMElement, isArray } from 'substance'
+import { DefaultDOMElement, isArray, forEach } from 'substance'
 import DFA from './DFA'
 import DFABuilder from './DFABuilder'
 import XMLSchema from './XMLSchema'
+import analyzeSchema from './analyzeSchema'
 
 const TEXT = DFA.TEXT
 const singleToken = DFABuilder.singleToken
 
 export default
-function compileRNG(fs, searchDirs, entry) {
+function compileRNG(fs, searchDirs, entry, manualClassification) {
   if (!isArray(searchDirs)) searchDirs = [searchDirs]
   let rngPath = _lookupRNG(fs, searchDirs, entry)
   let rngStr = fs.readFileSync(rngPath, 'utf8')
@@ -30,7 +31,18 @@ function compileRNG(fs, searchDirs, entry) {
   // turn the RNG schema into our internal data structure
   _compile(grammar)
 
-  return new XMLSchema(grammar.schemas)
+  const elementSchemas = grammar.schemas
+  let xmlSchema = new XMLSchema(grammar.schemas)
+  analyzeSchema(xmlSchema)
+
+  if (manualClassification) {
+    forEach(manualClassification, (type, name) => {
+      const elementSchema = xmlSchema.getElementSchema(name)
+      elementSchema.type = type
+    })
+  }
+
+  return xmlSchema
 }
 
 function _lookupRNG(fs, searchDirs, file) {
@@ -118,10 +130,7 @@ function _compile(grammar) {
     let schema = {
       name,
       attributes: _collectAttributes(el, grammar),
-      dfa,
-      usedInlineBy: {},
-      children: {},
-      parents: {},
+      dfa
     }
     schemas[name] = schema
   }
@@ -208,7 +217,7 @@ function _processSequence(el, grammar) {
 function _processReference(ref, grammar) {
   const name = ref.attr('name')
   const def = grammar.defs[name]
-  if (!def) throw new Error('Illegal ref')
+  if (!def) throw new Error(`Illegal ref: ${name} is not defined.`)
   if (def.dfa) return def.dfa.copy()
   // Guard for cyclic references
   // TODO: what to do with cyclic refs?

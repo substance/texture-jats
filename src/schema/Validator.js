@@ -1,6 +1,7 @@
 import DFA from './DFA'
 
 const TEXT = DFA.TEXT
+const START = DFA.START
 
 export default
 class Validator {
@@ -11,13 +12,12 @@ class Validator {
   }
 
   getElementValidator(tagName) {
-    let spec = this.schema[tagName]
-    if (!spec) throw new Error('Unsupported element')
+    let spec = this.schema.getElementSchema(tagName)
+    if (!spec) throw new Error(`Unsupported element: ${tagName}`)
     return new ElementValidator(spec)
   }
 
   isValid(el) {
-    let valid = true
     const name = el.tagName
     const elValidator = this.getElementValidator(name)
     const errors = elValidator.checkAttributes(el)
@@ -25,32 +25,34 @@ class Validator {
       this.errors = this.errors.concat(errors)
     }
     const iterator = el.getChildNodeIterator()
-    while (iterator.hasNext()) {
+    let valid = true
+    while (valid && iterator.hasNext()) {
       let error = null
       const childEl = iterator.next()
+      let token
       if (childEl.isTextNode()) {
-        error = elValidator.consumeText(childEl.textContent)
-        if (error) {
-          valid = false
-          this.errors.push(error)
+        if (/^\s*$/.exec(childEl.textContent)) {
+          continue
         }
+        token = TEXT
+      } else if (childEl.isElementNode()) {
+        token = childEl.tagName
+      } else {
         continue
       }
-      // skip all other nodes
-      if (!childEl.isElementNode()) continue
-
-      // check if the child element is valid here
-      error = elValidator.consume(childEl.tagName)
+      error = elValidator.consume(token)
       if (error) {
         this.errors.push(error)
+        valid = false
       }
-      // validate the child element recursively
-      valid = this.isValid(childEl) && valid
     }
-    if (!elValidator.isFinished()) {
+    if (valid && !elValidator.isFinished()) {
       this.errors.push(`<${el.tagName}> is incomplete`)
       valid = false
     }
+    el.children.forEach((child) => {
+      valid &= this.isValid(child)
+    })
     return valid
   }
 
@@ -68,24 +70,17 @@ class ElementValidator {
   }
 
   reset() {
-    this.state = 0
+    this.state = START
   }
 
   checkAttributes() {
     // TODO: check attributes
   }
 
-  consumeText(textContent) {
-    const spec = this.spec
-    if (!spec[this.state][TEXT] && !/^\s*$/.exec(textContent)) {
-      return `Text is not allowed in element: <${spec.name}>`
-    }
-  }
-
-  consume(tagName) {
-    this.state = this.dfa.consume(this.state, tagName)
+  consume(token) {
+    this.state = this.dfa.consume(this.state, token)
     if (this.state === -1) {
-      return `<${tagName}> is not valid in ${this.spec.name}`
+      return `${token} is not valid in ${this.spec.name}`
     }
   }
 

@@ -4,6 +4,8 @@ import XMLSchema from './XMLSchema'
 
 const { START, END, TEXT, EPSILON } = DFA
 
+const TYPES = ['element', 'text', 'inline-element', 'annotation', 'anchor', 'hybrid']
+
 export default
 function deserialize(data) {
   let elementSchemas = {}
@@ -17,11 +19,12 @@ function deserialize(data) {
   for (let i = 0; i < tagNames.length; i++) {
     const name = tagNames[i]
     const record = data[i]
-    const attrData = record[0]
-    const dfaData = record[1]
+    const type = TYPES[record[0]]
+    const attrData = record[1]
+    const dfaData = record[2]
     const attributes = _deserializeAttributes(attrData, attributeMapping)
     const dfa = _deserializeDFA(dfaData, tokenMapping)
-    elementSchemas[name] = { name, attributes, dfa }
+    elementSchemas[name] = { name, type, attributes, dfa }
   }
 
   return new XMLSchema(elementSchemas)
