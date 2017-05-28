@@ -270,4 +270,34 @@
     </choice>
   </define>
 
+  <define name="sig-block">
+    <element name="sig-block">
+      <ref name="sig-block-attlist"/>
+      <zeroOrMore>
+        <ref name="sig-block-elements"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="sig-block-elements">
+    <choice>
+      <ref name="contrib.class"/>
+      <ref name="person-group-info.class"/>
+      <ref name="sig.class"/>
+    </choice>
+  </define>
+  <define name="sig">
+    <element name="sig">
+      <ref name="sig-attlist"/>
+      <zeroOrMore>
+        <ref name="sig-elements"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="sig-elements">
+    <choice>
+      <ref name="x" />
+      <ref name="graphic" />
+    </choice>
+  </define>
+
 </grammar>

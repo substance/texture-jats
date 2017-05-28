@@ -1,3 +1,14 @@
+14. Redesign `<sig-block>` and `<sig>`
+
+As of JATS 1.1 `<sig>` very much 'free' form without a good structure.
+It looks like `<sig>` is a very visual structure composed of lines of text
+together with graphics. We would prefer to introduce a `<sig-line>` element
+instead of mixing text, `<break>` and `<graphic>`.
+For sake of compatibility we could use `<x>` instead of a `<sig-line>`.
+
+> TODO: we should evaluate how this is used and come up with an
+> improved model.
+
 13. Restrict `<person-group>`
 
 We want it to be used purely structurely.
