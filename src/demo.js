@@ -32,7 +32,12 @@ window.onload = function() {
 
   const schemaData = JSON.parse(vfs.readFileSync('src/rng/restrictedJATS.schema.json'))
   const xmlSchema = deserializeSchema(schemaData)
-  const xmlStr = vfs.readFileSync('data/elife-15278.xml')
+  // const xmlStr = vfs.readFileSync('data/elife-15278.xml')
+  // const xmlStr = vfs.readFileSync('samples/1471-2164-14-S1-S11.nxml')
+  // const xmlStr = vfs.readFileSync('samples/1471-2180-11-174.nxml')
+  const xmlStr = vfs.readFileSync('samples/1471-2180-14-100.nxml')
+
+
   const errors = validate(xmlSchema, xmlStr)
   if (errors.elements) {
     errors.elements.forEach((el) => {
