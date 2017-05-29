@@ -25,6 +25,9 @@ class Validator {
     if (errors) {
       this.errors = this.errors.concat(errors)
     }
+    if (elValidator.spec.type === 'external') {
+      return true
+    }
     const iterator = el.getChildNodeIterator()
     let valid = true
     while (valid && iterator.hasNext()) {

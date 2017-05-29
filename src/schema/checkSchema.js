@@ -115,6 +115,9 @@ export default function checkSchema(xmlSchema) {
         issues = issues.concat(_checkAnchor(elementSchema))
         break
       }
+      case 'external': {
+        break
+      }
       default:
         throw new Error('Unsupported element classification.')
     }

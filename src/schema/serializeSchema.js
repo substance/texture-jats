@@ -9,7 +9,8 @@ const TYPE_MAP = {
   'inline-element': 2,
   'annotation': 3,
   'anchor': 4,
-  'hybrid': 5
+  'hybrid': 5,
+  'external': 6
 }
 
 /*
