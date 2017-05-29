@@ -9,6 +9,7 @@ class Validator {
   constructor(xmlSchema) {
     this.schema = xmlSchema
     this.errors = []
+    this.errorElements = []
   }
 
   getElementValidator(tagName) {
@@ -43,11 +44,13 @@ class Validator {
       error = elValidator.consume(token)
       if (error) {
         this.errors.push(error)
+        this.errorElements.push(el)
         valid = false
       }
     }
     if (valid && !elValidator.isFinished()) {
       this.errors.push(`<${el.tagName}> is incomplete`)
+      this.errorElements.push(el)
       valid = false
     }
     el.children.forEach((child) => {
