@@ -17,7 +17,7 @@ const RNG_SEARCH_DIRS = [
 
 b.task('vfs', function() {
   vfs(b, {
-    src: ['./data/**/*', './src/rng/*'],
+    src: ['./data/**/*', './src/rng/*', './samples/*'],
     dest: 'tmp/vfs.js',
     format: 'es', moduleName: 'VFS'
   })
