@@ -7,6 +7,9 @@ export default
 class DFA {
 
   constructor(transitions) {
+    if (!transitions || Object.keys(transitions).length === 0) {
+      transitions = { START: { EPSILON: END } }
+    }
     this.transitions = transitions
   }
 
