@@ -9,15 +9,41 @@ import compileRNG from './schema/compileRNG'
 import serializeSchema from './schema/serializeSchema'
 import deserializeSchema from './schema/deserializeSchema'
 import analyzeSchema from './schema/analyzeSchema'
+import checkSchema from './schema/checkSchema'
+import validate from './schema/validate'
+
+const RNG_SEARCH_DIRS = [
+  'data/rng', 'src/rng'
+]
 
 window.onload = function() {
   // _compileXSD()
   // validatorDemo()
   // importDemo()
-  let schema = compileRNG(vfs, 'data/rng', 'JATS-archive-oasis-article1-mathml3.rng')
-  let serialized = serializeSchema(schema)
-  let deserialized = deserializeSchema(serialized)
-  let info = analyzeSchema(deserialized)
+  // let schema = compileRNG(vfs, 'data/rng', 'JATS-archive-oasis-article1-mathml3.rng')
+  // let serialized = serializeSchema(schema)
+  // let deserialized = deserializeSchema(serialized)
+  // let info = analyzeSchema(deserialized)
+
+  // const CLASSIFICATION = 'src/rng/restrictedJATS.classification.json'
+  // const classification = JSON.parse(vfs.readFileSync(CLASSIFICATION))
+  // const xmlSchema = compileRNG(vfs, RNG_SEARCH_DIRS, 'restrictedJATS.rng', classification)
+  // const issues = checkSchema(xmlSchema)
+
+  const schemaData = JSON.parse(vfs.readFileSync('src/rng/restrictedJATS.schema.json'))
+  const xmlSchema = deserializeSchema(schemaData)
+  // const xmlStr = vfs.readFileSync('data/elife-15278.xml')
+  // const xmlStr = vfs.readFileSync('samples/1471-2164-14-S1-S11.nxml')
+  // const xmlStr = vfs.readFileSync('samples/1471-2180-11-174.nxml')
+  const xmlStr = vfs.readFileSync('samples/1471-2180-14-100.nxml')
+
+
+  const errors = validate(xmlSchema, xmlStr)
+  if (errors.elements) {
+    errors.elements.forEach((el) => {
+      console.error(el)
+    })
+  }
   debugger
 }
 

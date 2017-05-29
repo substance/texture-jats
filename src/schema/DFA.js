@@ -7,6 +7,9 @@ export default
 class DFA {
 
   constructor(transitions) {
+    if (!transitions || Object.keys(transitions).length === 0) {
+      transitions = { START: { EPSILON: END } }
+    }
     this.transitions = transitions
   }
 
@@ -16,9 +19,11 @@ class DFA {
     if (nextState !== undefined) {
       return nextState
     }
-    const EPSILON = this.EPSILON
     while(T[state][EPSILON] !== undefined) {
       state = T[state][EPSILON]
+      if (state === END) {
+        return -1
+      }
       nextState = T[state][id]
       if (nextState !== undefined) {
         return nextState
@@ -29,8 +34,9 @@ class DFA {
 
   isFinished(state) {
     const T = this.transitions
-    const EPSILON = this.EPSILON
     if (state === 'END') return true
+    // if the state is invalid
+    if (!T[state]) return false
     while(T[state][EPSILON] !== undefined) {
       state = T[state][EPSILON]
       if (state === 'END') return true

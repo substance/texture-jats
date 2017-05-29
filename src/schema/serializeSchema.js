@@ -3,6 +3,16 @@ import DFA from './DFA'
 
 const { EPSILON, TEXT, START, END } = DFA
 
+const TYPE_MAP = {
+  'element': 0,
+  'text': 1,
+  'inline-element': 2,
+  'annotation': 3,
+  'anchor': 4,
+  'hybrid': 5,
+  'external': 6
+}
+
 /*
   The schema is serialized to JSON, consisting of an Array of records
   ordered by tag name.
@@ -45,9 +55,10 @@ function serialize(xmlSchema) {
   for (let i = 0; i < tagNames.length; i++) {
     let name = tagNames[i]
     let schema = xmlSchema.getElementSchema(name)
+    let type = TYPE_MAP[schema.type]
     let attrData = _serializeAttributes(schema.attributes, attributeMapping)
     let dfaData = _serializeDFA(schema.dfa, tokenMapping)
-    result.push([attrData, dfaData])
+    result.push([type, attrData, dfaData])
   }
 
   return result
