@@ -8,6 +8,8 @@ const TYPES = ['element', 'text', 'inline-element', 'annotation', 'anchor', 'hyb
 
 export default
 function deserialize(data) {
+  data = data.slice()
+
   let elementSchemas = {}
   let tagNames = data.shift()
   let attributeNames = data.shift()

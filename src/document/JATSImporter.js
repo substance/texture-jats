@@ -1,7 +1,7 @@
-import { DefaultDOMElement, DOMImporter, map } from 'substance'
-import JATS from '../JATS'
-import Validator from '../common/Validator'
-import XMLAnnotationConverter from './XMLAnnotationConverter'
+import { DefaultDOMElement, DOMImporter, map, isString } from 'substance'
+import deserializeSchema from '../schema/deserializeSchema'
+import Validator from '../schema/Validator'
+import restrictedJATS from '../rng/restrictedJATS'
 
 export default
 class JATSImporter extends DOMImporter {
@@ -11,18 +11,22 @@ class JATSImporter extends DOMImporter {
       idAttribute: 'id',
       schema: config.getSchema(),
       // HACK: usually we use configurator.createImporter()
-      converters: map(config.config.converters.jats, val=>val)
+      converters: map(config.config.converters.restrictedJATS, val=>val)
     }, context)
 
-    this.validator = new Validator(JATS)
+    this.xmlSchema = deserializeSchema(restrictedJATS)
+    this.validator = new Validator(this.xmlSchema)
   }
 
-  importDocument(xml) {
+  importDocument(dom) {
     this.reset()
-    let dom = DefaultDOMElement.parseXML(xml)
+    if (isString(dom)) {
+      dom = DefaultDOMElement.parseXML(dom)
+    }
     let articleEl = dom.find('article')
     if (!articleEl) throw new Error('Could not find <article> element.')
     this.convertElement(articleEl)
+
     return this.state.doc
   }
 
@@ -61,13 +65,7 @@ class JATSImporter extends DOMImporter {
       }
 
       // TODO: need to rethink this
-      this._allConverters.push(converter)
-      if (NodeClass.isHybrid) {
-        let hybridConverter = new XMLAnnotationConverter()
-        hybridConverter.tagName = NodeClass.type
-        this._propertyAnnotationConverters.push(hybridConverter)
-        this._blockConverters.push(converter)
-      } else if (NodeClass.isAnnotation) {
+      if (NodeClass.prototype._isAnnotation) {
         this._propertyAnnotationConverters.push(converter)
       } else {
         this._blockConverters.push(converter)
@@ -76,12 +74,13 @@ class JATSImporter extends DOMImporter {
     if (!this._defaultBlockConverter) {
       throw new Error(`No converter for defaultTextType ${defaultTextType}`)
     }
+    this._allConverters = this._blockConverters.concat(this._propertyAnnotationConverters)
   }
 
   _createNodeData(el, type) {
     let nodeData = super._createNodeData(el, type)
     let attributes = {}
-    el.getAttributes().map((value, key) => {
+    el.getAttributes().forEach((value, key) => {
       attributes[key] = value
     })
     nodeData.attributes = attributes

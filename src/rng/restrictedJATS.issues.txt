@@ -1,0 +1,6 @@
+4 issues:
+
+[3]: inline-element <x> is used in structured content by contrib-group,contrib,address,sig,ack,bio,notes,article-meta,author-notes,abstract,trans-abstract,kwd-group,pub-date,conference,app-group,app,fn-group,glossary,boxed-text,table-wrap-foot,funding-source,list,inline-formula,disp-formula,disp-quote,ref-list,ref,sec,body,front-stub
+[3]: inline-element <chem-struct> is used in structured content by alternatives,chem-struct-wrap
+[3]: inline-element <inline-graphic> is used in structured content by private-char
+[3]: inline-element <xref> is used in structured content by contrib-group,contrib

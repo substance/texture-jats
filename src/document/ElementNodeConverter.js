@@ -1,26 +1,27 @@
+import XMLNodeConverter from './XMLNodeConverter'
+
 /*
-  StructuredNodes have attributes and children.
+  ElementNodes have attributes and children.
 */
 export default
-class StructuredNodeConverter {
-
-  constructor(type) {
-    this.type = type
-  }
+class ElementNodeConverter extends XMLNodeConverter {
 
   import(el, node, converter) {
     let it = converter.getChildNodeIterator(el)
     let childNodes = []
     while(it.hasNext()) {
       const childEl = it.next()
-      let childNode = converter.convertElement(childEl)
-      childNodes.push(childNode.id)
+      if (childEl.isElementNode()) {
+        let childNode = converter.convertElement(childEl)
+        childNodes.push(childNode.id)
+      }
     }
     node.childNodes = childNodes
   }
 
   export(node, el, converter) {
     const doc = node.getDocument()
+    el.tagName = this.tagNameNS
     el.setAttributes(node.attributes)
     el.childNodes.forEach((id) => {
       let childNode = doc.get(id)

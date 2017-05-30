@@ -110,16 +110,24 @@ class ValidatingChildNodeIterator {
   next() {
     let error
     let next = this._it.next()
+    let oldState = this._validator.state
     if (next.isTextNode()) {
-      error = this._validator.consumeText(next.textContent)
+      error = this._validator.consume(TEXT)
     } else if (next.isElementNode()) {
       error = this._validator.consume(next.tagName)
     }
     if (error) {
-      throw new Error(error)
+      if (next.isTextNode()) {
+        console.error(`TEXT is invalid within <${this._validator.spec.name}>. Skipping.`, next.textContent)
+      } else if (next.isElementNode()) {
+        console.error(`<${next.tagName}> is invalid within <${this._validator.spec.name}>. Skipping.`, next)
+      }
+      this._validator.state = oldState
+      return next.createComment(next.outerHTML)
+    } else {
+      this._states.push(this._validator.state)
+      return next
     }
-    this._states.push(this._validator.state)
-    return next
   }
 
   back() {

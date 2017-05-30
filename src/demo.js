@@ -1,10 +1,10 @@
-/* eslint-disable no-console, no-debugger */
-import { DefaultDOMElement as DOM, Configurator, forEach } from 'substance'
+/* eslint-disable no-console, no-debugger, no-unused-vars */
+import { DefaultDOMElement as DOM, Configurator } from 'substance'
 import vfs from 'vfs'
 // import Validator from './schema/Validator'
 // import compileXSD from './schema/compileXSD'
-// import JATSPackage from './xml/JATSPackage'
-// import JATSImporter from './xml/JATSImporter'
+import JATSPackage from './document/JATSPackage'
+import JATSImporter from './document/JATSImporter'
 import compileRNG from './schema/compileRNG'
 import serializeSchema from './schema/serializeSchema'
 import deserializeSchema from './schema/deserializeSchema'
@@ -19,9 +19,22 @@ const RNG_SEARCH_DIRS = [
 ]
 
 window.onload = function() {
-  // _compileXSD()
-  // validatorDemo()
-  // importDemo()
+  importDemo()
+}
+
+function importDemo() {
+  let config = new Configurator()
+  config.import(JATSPackage)
+  let xml = vfs.readFileSync('data/elife-15278.xml')
+  let dom = DOM.parseXML(xml)
+  // JATS -> TextureJATS
+  transform(dom)
+  let importer = new JATSImporter(config)
+  let doc = importer.importDocument(dom)
+  console.info(doc)
+}
+
+function _compileSchema() {
   // let schema = compileRNG(vfs, 'data/rng', 'JATS-archive-oasis-article1-mathml3.rng')
   // let serialized = serializeSchema(schema)
   // let deserialized = deserializeSchema(serialized)
@@ -50,17 +63,7 @@ window.onload = function() {
       console.error(el)
     })
   }
-  debugger
 }
-
-// function importDemo() {
-//   let config = new Configurator()
-//   config.import(JATSPackage)
-//   let xml = vfs.readFileSync('data/elife-15278.xml')
-//   let importer = new JATSImporter(config)
-//   let doc = importer.importDocument(xml)
-//   console.info(doc)
-// }
 
 // function _compileXSD() { //eslint-disable-line
 //   // TODO: ATM we can't import/include other xsd files

@@ -4,7 +4,7 @@
 
 /* global __dirname */
 
-const { forEach } = require('substance')
+// const { forEach } = require('substance')
 const b = require('substance-bundler')
 const vfs = require('substance-bundler/extensions/vfs')
 const fs = require('fs')
@@ -60,8 +60,9 @@ b.task('restricted-jats:compile', ['tools'], () => {
   _compile('restrictedJATS', 'src/rng/restrictedJATS.rng', RNG_SEARCH_DIRS, 'src/rng', 'pretty')
 })
 
-function _compile(name, src, searchDirs, baseDir='generated', pretty=false) {
+function _compile(name, src, searchDirs, baseDir='generated') {
   const DEST = `${baseDir}/${name}.schema.json`
+  const DESTJS = `${baseDir}/${name}.js`
   const CLASSIFICATION = `${baseDir}/${name}.classification.json`
   const ISSUES = `${baseDir}/${name}.issues.txt`
   const entry = path.basename(src)
@@ -75,13 +76,9 @@ function _compile(name, src, searchDirs, baseDir='generated', pretty=false) {
         manualClassification = JSON.parse(fs.readFileSync(CLASSIFICATION))
       }
       const xmlSchema = compileRNG(fs, searchDirs, entry, manualClassification)
-      let serializedSchema
-      if (pretty) {
-        serializedSchema = JSON.stringify(serializeSchema(xmlSchema), 0, 2)
-      } else {
-        serializedSchema = JSON.stringify(serializeSchema(xmlSchema))
-      }
-      b.writeSync(DEST, serializedSchema)
+      let schemaData = serializeSchema(xmlSchema)
+      b.writeSync(DEST, JSON.stringify(schemaData, 0, 2))
+      b.writeSync(DESTJS, `export default ${JSON.stringify(schemaData)}`)
 
       // now check the schema for issues
       const issues = checkSchema(xmlSchema)
