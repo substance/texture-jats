@@ -1,35 +1,24 @@
 /* eslint-disable no-console, no-debugger, no-unused-vars */
 import { DefaultDOMElement as DOM, Configurator } from 'substance'
 import vfs from 'vfs'
-// import Validator from './schema/Validator'
-// import compileXSD from './schema/compileXSD'
-import JATSPackage from './document/JATSPackage'
-import JATSImporter from './document/JATSImporter'
-import compileRNG from './schema/compileRNG'
-import serializeSchema from './schema/serializeSchema'
-import deserializeSchema from './schema/deserializeSchema'
-import analyzeSchema from './schema/analyzeSchema'
-import checkSchema from './schema/checkSchema'
-import validate from './schema/validate'
-
-import transform from './transform/transform'
+import { TextureJATS, TextureJATSPackage, jats2texture, validate } from './api'
 
 const RNG_SEARCH_DIRS = [
-  'data/rng', 'src/rng'
+  'data/rng', 'src/jats'
 ]
 
 window.onload = function() {
+  // _compileSchema()
   importDemo()
 }
 
 function importDemo() {
   let config = new Configurator()
-  config.import(JATSPackage)
+  config.import(TextureJATSPackage)
   let xml = vfs.readFileSync('data/elife-15278.xml')
   let dom = DOM.parseXML(xml)
-  // JATS -> TextureJATS
-  transform(dom)
-  let importer = new JATSImporter(config)
+  jats2texture(dom)
+  let importer = config.createImporter('TextureJATS')
   let doc = importer.importDocument(dom)
   console.info(doc)
 }
@@ -40,13 +29,12 @@ function _compileSchema() {
   // let deserialized = deserializeSchema(serialized)
   // let info = analyzeSchema(deserialized)
 
-  // const CLASSIFICATION = 'src/rng/restrictedJATS.classification.json'
+  // const CLASSIFICATION = 'src/rng/TextureJATS.classification.json'
   // const classification = JSON.parse(vfs.readFileSync(CLASSIFICATION))
-  // const xmlSchema = compileRNG(vfs, RNG_SEARCH_DIRS, 'restrictedJATS.rng', classification)
+  // const xmlSchema = compileRNG(vfs, RNG_SEARCH_DIRS, 'TextureJATS.rng', classification)
   // const issues = checkSchema(xmlSchema)
 
-  const schemaData = JSON.parse(vfs.readFileSync('src/rng/restrictedJATS.schema.json'))
-  const xmlSchema = deserializeSchema(schemaData)
+  const xmlSchema = TextureJATS
   const xmlStr = vfs.readFileSync('data/elife-15278.xml')
   // const xmlStr = vfs.readFileSync('samples/1471-2164-14-S1-S11.nxml')
   // const xmlStr = vfs.readFileSync('samples/1471-2180-11-174.nxml')
@@ -54,7 +42,7 @@ function _compileSchema() {
   const dom = DOM.parseXML(xmlStr)
 
   // JATS 1.1 compatibilty transformation
-  transform(dom)
+  jats2texture(dom)
 
   // validation
   const errors = validate(xmlSchema, dom)

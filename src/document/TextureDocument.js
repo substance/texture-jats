@@ -4,6 +4,8 @@ import {
     DocumentNodeFactory
 } from 'substance'
 
+import TextureJATS from '../jats/TextureJATS'
+
 export default
 class JATSDocument extends Document {
 
@@ -14,6 +16,10 @@ class JATSDocument extends Document {
     this.addIndex('type', new PropertyIndex('type'))
     // special index for (property-scoped) annotations
     this.addIndex('annotations', new AnnotationIndex())
+  }
+
+  getXMLSchema() {
+    return TextureJATS
   }
 
 }

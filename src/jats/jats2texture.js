@@ -1,17 +1,20 @@
+export default function jats2texture(article) {
+  pBlock(article)
+}
 
 /*
   In JATS 1.1 it is allowed to have block level elements inside of `<p>`.
   We split these paragraphs, inserting new block-level elements.
 */
-export default function pBlock(article) {
-  article.findAll('p').forEach(_transform)
+function pBlock(article) {
+  article.findAll('p').forEach(_pBlock)
 }
 
 // TODO: add all of them
 const BLOCKS = ['fig', 'fig-group', 'media']
 const isBlock = BLOCKS.reduce((m, n) => { m[n] = true; return m}, {})
 
-function _transform(p) {
+function _pBlock(p) {
   let parent = p.parentNode
   let children = p.children
   let L = children.length

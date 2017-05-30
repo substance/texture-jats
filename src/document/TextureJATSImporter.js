@@ -1,20 +1,19 @@
 import { DefaultDOMElement, DOMImporter, map, isString } from 'substance'
-import deserializeSchema from '../schema/deserializeSchema'
-import Validator from '../schema/Validator'
-import restrictedJATS from '../rng/restrictedJATS'
+import Validator from '../xml/Validator'
+import TextureJATS from '../jats/TextureJATS'
 
 export default
-class JATSImporter extends DOMImporter {
+class TextureJATSImporter extends DOMImporter {
 
   constructor(config, context) {
     super({
       idAttribute: 'id',
-      schema: config.getSchema(),
+      schema: config.schema,
       // HACK: usually we use configurator.createImporter()
-      converters: map(config.config.converters.restrictedJATS, val=>val)
+      converters: config.converters
     }, context)
 
-    this.xmlSchema = deserializeSchema(restrictedJATS)
+    this.xmlSchema = TextureJATS
     this.validator = new Validator(this.xmlSchema)
   }
 

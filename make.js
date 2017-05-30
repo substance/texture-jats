@@ -12,9 +12,41 @@ const path = require('path')
 
 const RNG_SEARCH_DIRS = [
   path.join(__dirname, 'data', 'rng'),
-  path.join(__dirname, 'src', 'rng')
+  path.join(__dirname, 'src', 'jats')
 ]
 
+b.task('clean', () => {
+  b.rm('dist')
+})
+
+// compiles TextureJATS and does some evaluation
+b.task('compile', ['tools'], () => {
+  _compile('TextureJATS', 'src/jats/TextureJATS.rng', RNG_SEARCH_DIRS, 'src/jats')
+})
+
+// internal tools compiled to be able to use them here
+b.task('tools', () => {
+  b.js('./src/tools.js', {
+    dest: 'tmp/tools.js',
+    format: 'cjs',
+    external: ['substance']
+  })
+})
+
+b.task('build', ['clean', 'compile'], () => {
+  b.js('./src/api.js', {
+    targets: [{
+      dest: 'dist/texture-jats.cjs.js',
+      format: 'cjs',
+    }, {
+      dest: 'dist/texture-jats.js',
+      format: 'es',
+    }],
+    external: ['substance']
+  })
+})
+
+// a virtual fs used for demo
 b.task('vfs', function() {
   vfs(b, {
     src: ['./data/**/*', './src/rng/*', './samples/*'],
@@ -36,33 +68,12 @@ b.task('demo', ['vfs'], () => {
   })
 })
 
-b.task('tools', () => {
-  b.js('./src/tools.js', {
-    dest: 'tmp/tools.js',
-    format: 'cjs',
-    external: ['substance']
-  })
-})
+b.task('default', ['build'])
 
-b.task('pretty-print', () => {
-  b.js('./src/schema/prettyPrint.js', {
-    dest: 'tmp/prettyPrint.js',
-    format: 'cjs',
-    external: ['substance']
-  })
-})
-
-b.task('jats:compile', ['tools'], () => {
-  _compile('JATS', 'data/rng/JATS-archive-oasis-article1-mathml3.rng', RNG_SEARCH_DIRS)
-})
-
-b.task('restricted-jats:compile', ['tools'], () => {
-  _compile('restrictedJATS', 'src/rng/restrictedJATS.rng', RNG_SEARCH_DIRS, 'src/rng', 'pretty')
-})
+/* Internal helpers */
 
 function _compile(name, src, searchDirs, baseDir='generated') {
-  const DEST = `${baseDir}/${name}.schema.json`
-  const DESTJS = `${baseDir}/${name}.js`
+  const DEST = `${baseDir}/${name}.data.js`
   const CLASSIFICATION = `${baseDir}/${name}.classification.json`
   const ISSUES = `${baseDir}/${name}.issues.txt`
   const entry = path.basename(src)
@@ -77,9 +88,7 @@ function _compile(name, src, searchDirs, baseDir='generated') {
       }
       const xmlSchema = compileRNG(fs, searchDirs, entry, manualClassification)
       let schemaData = serializeSchema(xmlSchema)
-      b.writeSync(DEST, JSON.stringify(schemaData, 0, 2))
-      b.writeSync(DESTJS, `export default ${JSON.stringify(schemaData)}`)
-
+      b.writeSync(DEST, `export default ${JSON.stringify(schemaData)}`)
       // now check the schema for issues
       const issues = checkSchema(xmlSchema)
       const issuesData = [`${issues.length} issues:`, ''].concat(issues).join('\n')
@@ -87,57 +96,3 @@ function _compile(name, src, searchDirs, baseDir='generated') {
     }
   })
 }
-
-// b.task('printInfo', ['vfs'], () => {
-//   b.js('./src/printInfo.js', {
-//     dest: 'tmp/printInfo.js',
-//     format: 'cjs',
-//     alias: {
-//       'vfs': path.join(__dirname, 'tmp/vfs.js')
-//     },
-//     external: ['substance']
-//   })
-// })
-
-// b.task('definition', ['printInfo'], function() {
-//   b.custom('Generating info...', {
-//     src: 'tmp/printInfo.js',
-//     dest: 'proposal/JATS.md',
-//     execute() {
-//       const printInfo = require('./tmp/printInfo')
-//       b.writeSync('proposal/JATS.md', printInfo({
-//         xsdPath: 'data/xsd/JATS-archive-oasis-article1-mathml3-elements.xsd',
-//         structure: true
-//       }))
-//     }
-//   })
-// })
-
-// b.task('classification', ['printInfo'], function() {
-//   b.custom('Generating info...', {
-//     src: 'tmp/printInfo.js',
-//     dest: 'proposal/CLASSIFICATION.md',
-//     execute() {
-//       const printInfo = require('./tmp/printInfo')
-//       b.writeSync('proposal/CLASSIFICATION.md', printInfo({
-//         xsdPath: 'data/xsd/JATS-archive-oasis-article1-mathml3-elements.xsd',
-//         classification: true
-//       }))
-//     }
-//   })
-// })
-
-// b.task('stats', ['vfs', 'jats'], () => {
-//   b.js('./src/stats.js', {
-//     dest: 'tmp/stats.js',
-//     format: 'cjs',
-//     alias: {
-//       'vfs': path.join(__dirname, 'tmp/vfs.js')
-//     },
-//     external: ['substance']
-//   })
-// })
-
-/* HTTP server */
-b.setServerPort(5556)
-b.serve({ static: true, route: '/', folder: '.' })

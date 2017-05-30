@@ -1,34 +1,34 @@
-import JATSDocument from './JATSDocument'
-import TextNode from './TextNode'
-import TextNodeConverter from './TextNodeConverter'
-import ElementNode from './ElementNode'
-import ElementNodeConverter from './ElementNodeConverter'
-import AnnotationNode from './AnnotationNode'
-import AnnotationNodeConverter from './AnnotationNodeConverter'
-import AnchorNode from './AnchorNode'
-import AnchorNodeConverter from './AnchorNodeConverter'
-import InlineElementNode from './InlineElementNode'
-import InlineElementNodeConverter from './InlineElementNodeConverter'
-import ExternalNode from './ExternalNode'
-import ExternalNodeConverter from './ExternalNodeConverter'
-import restrictedJATS from '../rng/restrictedJATS'
-import deserializeSchema from '../schema/deserializeSchema'
+import TextureDocument from './document/TextureDocument'
+import TextNode from './document/TextNode'
+import TextNodeConverter from './document/TextNodeConverter'
+import ElementNode from './document/ElementNode'
+import ElementNodeConverter from './document/ElementNodeConverter'
+import AnnotationNode from './document/AnnotationNode'
+import AnnotationNodeConverter from './document/AnnotationNodeConverter'
+import AnchorNode from './document/AnchorNode'
+import AnchorNodeConverter from './document/AnchorNodeConverter'
+import InlineElementNode from './document/InlineElementNode'
+import InlineElementNodeConverter from './document/InlineElementNodeConverter'
+import ExternalNode from './document/ExternalNode'
+import ExternalNodeConverter from './document/ExternalNodeConverter'
+import TextureJATS from './jats/TextureJATS'
+import TextureJATSImporter from './document/TextureJATSImporter'
 
 export default {
-  name: 'restJATS',
+  name: 'TextureJATS',
   configure(config) {
     registerSchema(config)
   }
 }
 
 function registerSchema(config) {
-  const xmlSchema = deserializeSchema(restrictedJATS)
-  const schemaName = 'restrictedJATS'
+  const xmlSchema = TextureJATS
+  const schemaName = 'TextureJATS'
   // schema declaration
   config.defineSchema({
     name: schemaName,
     version: '1.1',
-    DocumentClass: JATSDocument,
+    DocumentClass: TextureDocument,
     defaultTextType: 'p'
   })
   const tagNames = xmlSchema.getTagNames()
@@ -78,4 +78,6 @@ function registerSchema(config) {
     let converter = new ConverterClass(element.name)
     config.addConverter(schemaName, converter)
   })
+
+  config.addImporter('TextureJATS', TextureJATSImporter)
 }
