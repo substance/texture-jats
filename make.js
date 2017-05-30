@@ -1,7 +1,3 @@
-/*
-  IMPORTANT: Don't use ES6 here, as some people are still on Node 4.
-*/
-
 /* global __dirname */
 
 // const { forEach } = require('substance')
