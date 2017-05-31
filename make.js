@@ -35,7 +35,7 @@ b.task('build', ['clean', 'compile'], () => {
       dest: 'dist/texture-jats.cjs.js',
       format: 'cjs',
     }, {
-      dest: 'dist/texture-jats.js',
+      dest: 'dist/texture-jats.es.js',
       format: 'es',
     }],
     external: ['substance']

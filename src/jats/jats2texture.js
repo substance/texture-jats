@@ -1,5 +1,12 @@
+import { isString, DefaultDOMElement } from 'substance'
+
 export default function jats2texture(article) {
-  pBlock(article)
+  let dom = article
+  if (isString(dom)) {
+    dom = DefaultDOMElement.parseXML(article)
+  }
+  pBlock(dom)
+  return dom
 }
 
 /*

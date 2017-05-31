@@ -23,7 +23,7 @@ export default {
 
 function registerSchema(config) {
   const xmlSchema = TextureJATS
-  const schemaName = 'TextureJATS'
+  const schemaName = 'texture-jats'
   // schema declaration
   config.defineSchema({
     name: schemaName,
@@ -79,5 +79,5 @@ function registerSchema(config) {
     config.addConverter(schemaName, converter)
   })
 
-  config.addImporter('TextureJATS', TextureJATSImporter)
+  config.addImporter(schemaName, TextureJATSImporter)
 }

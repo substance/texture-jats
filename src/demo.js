@@ -18,7 +18,7 @@ function importDemo() {
   let xml = vfs.readFileSync('data/elife-15278.xml')
   let dom = DOM.parseXML(xml)
   jats2texture(dom)
-  let importer = config.createImporter('TextureJATS')
+  let importer = config.createImporter('texture-jats')
   let doc = importer.importDocument(dom)
   console.info(doc)
 }
