@@ -19,12 +19,14 @@ class TextureJATSImporter extends DOMImporter {
 
   importDocument(dom) {
     this.reset()
+    const doc = this.state.doc
     if (isString(dom)) {
       dom = DefaultDOMElement.parseXML(dom)
     }
     let articleEl = dom.find('article')
     if (!articleEl) throw new Error('Could not find <article> element.')
-    this.convertElement(articleEl)
+    doc.article = this.convertElement(articleEl)
+
 
     return this.state.doc
   }
@@ -88,6 +90,28 @@ class TextureJATSImporter extends DOMImporter {
 
   getChildNodeIterator(el) {
     return this.validator.getValidatingChildNodeIterator(el)
+  }
+
+  _getIdForElement(el, type) {
+    if (type === 'article') {
+      return 'article'
+    } else {
+      return super._getIdForElement(el, type)
+    }
+  }
+
+  _convertPropertyAnnotation(el, nodeData) {
+    throw new Error('stand-alone annotations are not supported.')
+  }
+
+  _convertInlineNode(el, nodeData, converter) {
+    const path = []
+    if (converter.import) {
+      nodeData = converter.import(el, nodeData, this) || nodeData
+    }
+    nodeData.start = { path, offset: 0 }
+    nodeData.end = { offset: 0 }
+    return nodeData
   }
 
 }

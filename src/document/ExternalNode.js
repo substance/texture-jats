@@ -3,6 +3,8 @@ import { DocumentNode } from 'substance'
 export default
 class ExternalNode extends DocumentNode {}
 
+ExternalNode.prototype._elementType = 'external'
+
 ExternalNode.type = 'external'
 
 ExternalNode.schema = {

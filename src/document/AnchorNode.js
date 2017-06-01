@@ -1,7 +1,21 @@
 import { DocumentNode } from 'substance'
 
 export default
-class AnchorNode extends DocumentNode {}
+class AnchorNode extends DocumentNode {
+
+  get path() {
+    return this.coor.start.path
+  }
+
+  get parent() {
+    const path = this.path
+    const doc = this.getDocument()
+    return doc.get(path[0])
+  }
+
+}
+
+AnchorNode.prototype._elementType = 'anchor'
 
 AnchorNode.type = 'anchor'
 

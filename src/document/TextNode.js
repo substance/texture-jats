@@ -1,7 +1,11 @@
 import { DocumentNode } from 'substance'
+import node2element from './node2element'
 
-export default
-class TextNode extends DocumentNode {
+/*
+  Note: this is slightly different to Substance TextNode
+  thus this does not extend Substance.TextNode.
+*/
+export default class TextNode extends DocumentNode {
 
   getTextPath() {
     // TODO: deprecate this
@@ -25,7 +29,27 @@ class TextNode extends DocumentNode {
     return this.content.length
   }
 
+  toXML() {
+    return node2element(this)
+  }
+
+  getAnnotations() {
+    return this.getDocument().getIndex('annotations').get(this.getPath())
+  }
+
+  /*
+    This method is used for mimicking a DOM element.
+    In our system, TextNodes are substantially different to common DOM elements
+    as they only have plain-text, and overlaying annotations,
+    i.e., annotations are not stored hierarchically.
+  */
+  getChildren() {
+    return this.getAnnotations()
+  }
+
 }
+
+TextNode.prototype._elementType = 'text'
 
 TextNode.isText = true
 

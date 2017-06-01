@@ -5,6 +5,7 @@ import {
 } from 'substance'
 
 import TextureJATS from '../jats/TextureJATS'
+import ParentNodeHook from './ParentNodeHook'
 
 export default
 class JATSDocument extends Document {
@@ -16,10 +17,18 @@ class JATSDocument extends Document {
     this.addIndex('type', new PropertyIndex('type'))
     // special index for (property-scoped) annotations
     this.addIndex('annotations', new AnnotationIndex())
+
+    ParentNodeHook.register(this)
   }
 
   getXMLSchema() {
     return TextureJATS
+  }
+
+  getXRefs() {
+    let articleEl = this.get('article')
+    // this traverses the article in the same way as css-select
+    return articleEl.findAll('xref')
   }
 
 }
