@@ -750,4 +750,32 @@
     </choice>
   </define>
 
+  <define name="abstract-model">
+    <zeroOrMore>
+      <ref name="id.class"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="sec-meta"/>
+    </optional>
+    <optional>
+      <ref name="label"/>
+    </optional>
+    <optional>
+      <ref name="title"/>
+    </optional>
+    <optional>
+      <ref name="abstract-content"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="sec-back-matter-mix"/>
+    </zeroOrMore>
+  </define>
+  <define name="abstract-content">
+    <element name="abstract-content">
+      <zeroOrMore>
+        <ref name="para-level"/>
+      </zeroOrMore>
+    </element>
+  </define>
+
 </grammar>

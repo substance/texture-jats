@@ -1,3 +1,7 @@
+51. Introduce `<abstract-content>`
+
+We prefer to wrap content from meta-data.
+
 50. Restrict `<textual-form>`
 
 In JATS 1.1 `<textual-form>` is a text node, but also allows for `<label>` which
