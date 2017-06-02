@@ -778,4 +778,20 @@
     </element>
   </define>
 
+  <define name="body-model">
+    <optional>
+      <ref name="body-content"/>
+    </optional>
+    <optional>
+      <ref name="sig-block"/>
+    </optional>
+  </define>
+  <define name="body-content">
+    <element name="body-content">
+      <zeroOrMore>
+        <ref name="para-level"/>
+      </zeroOrMore>
+    </element>
+  </define>
+
 </grammar>
