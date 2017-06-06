@@ -4,7 +4,7 @@ import XMLSchema from './XMLSchema'
 
 const { START, END, TEXT, EPSILON } = DFA
 
-const TYPES = ['element', 'text', 'inline-element', 'annotation', 'anchor', 'hybrid', 'external']
+const TYPES = ['element', 'text', 'inline-element', 'annotation', 'anchor', 'hybrid', 'external', 'container']
 
 export default
 function deserialize(data) {

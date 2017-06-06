@@ -19,7 +19,8 @@ class ParentNodeHook {
     switch(op.type) {
       case 'create': {
         switch(node._elementType) {
-          case 'element': {
+          case 'element':
+          case 'container': {
             _setParent(node, node.childNodes)
             _setRegisteredParent(node)
           }
