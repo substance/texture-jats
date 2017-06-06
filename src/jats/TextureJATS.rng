@@ -789,8 +789,35 @@
   <define name="body-content">
     <element name="body-content">
       <zeroOrMore>
-        <ref name="para-level"/>
+        <choice>
+          <ref name="sec.class"/>
+          <ref name="para-level"/>
+        </choice>
       </zeroOrMore>
+    </element>
+  </define>
+
+  <!-- custom element used to replace <sec> -->
+  <define name="sec.class">
+    <ref name="heading"/>
+  </define>
+
+  <define name="heading">
+    <element name="heading">
+      <ref name="sec-attlist"/>
+      <optional>
+        <attribute name="level"/>
+      </optional>
+      <optional>
+        <ref name="sec-meta"/>
+      </optional>
+      <optional>
+        <ref name="label"/>
+      </optional>
+      <optional>
+        <ref name="label"/>
+      </optional>
+      <ref name="title" />
     </element>
   </define>
 

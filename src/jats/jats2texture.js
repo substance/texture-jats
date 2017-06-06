@@ -9,6 +9,9 @@ export default function jats2texture(article) {
   wrapAbstractContent(dom)
   wrapBodyContent(dom)
 
+  // turn <sec> into <heading>
+  secToHeadings(dom)
+
   // bring block-level elements to top
   pBlock(dom)
 
@@ -49,7 +52,7 @@ function wrapBodyContent(article) {
     const children = body.children
     body.empty()
     body.append(
-      article.createElement('body-content').append(children),
+      article.createElement('body-content').append(children)
     )
     if (sigBlock) {
       body.append(sigBlock)
@@ -91,4 +94,44 @@ function _pBlock(p) {
       }
     }
   }
+}
+
+function secToHeadings(article) {
+  article.findAll('sec').forEach(_secToHeading)
+}
+
+function _secToHeading(sec, level=1) {
+  const parent = sec.parentNode
+  const nextSibling = sec.nextSibling
+
+  // skip sections which have been processed already
+  // i.e. they have been detached from their parent
+  if (!parent) return
+
+  let h = sec.createElement('heading')
+  h.attr(sec.getAttributes())
+  h.attr('level', level)
+
+  // move the section front matter
+  h.append(sec.find('sec-meta'))
+  h.append(sec.find('label'))
+  h.append(sec.find('title'))
+
+  // process the remaining content recursively
+  let children = sec.children
+  let L = children.length
+  for (let i = 0; i < L; i++) {
+    const child = children[i]
+    if (child.tagName === 'sec') {
+      _secToHeading(child)
+    }
+  }
+  // now we move all children to the parent level
+  parent.replaceChild(sec, h)
+  children = sec.children
+  L = children.length
+  for (let i = L - 1; i >= 0; i--) {
+    parent.insertBefore(children[i], nextSibling)
+  }
+  console.assert(!sec.parentNode, '<sec> element should have been detached.')
 }
