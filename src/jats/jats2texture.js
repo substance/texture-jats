@@ -5,8 +5,56 @@ export default function jats2texture(article) {
   if (isString(dom)) {
     dom = DefaultDOMElement.parseXML(article)
   }
+  // wrap containers
+  wrapAbstractContent(dom)
+  wrapBodyContent(dom)
+
+  // bring block-level elements to top
   pBlock(dom)
+
   return dom
+}
+
+const ABSTRACT_META = ['object-id','sec-meta', 'label', 'title'].reduce((m, n) => { m[n] = true; return m}, {})
+const ABSTRACT_BACK = ['notes','fn-group','glossary','ref-list'].reduce((m, n) => { m[n] = true; return m}, {})
+
+function wrapAbstractContent(article) {
+  let abstracts = article.findAll('abstract')
+  abstracts.forEach( (abstract) => {
+    // restructure child nodes
+    const meta = []
+    const content = []
+    const back = []
+    abstract.children.forEach((child) => {
+      const tagName = child.tagName
+      if (ABSTRACT_META[tagName]) {
+        meta.push(child)
+      } else if (ABSTRACT_BACK[tagName]) {
+        back.push(child)
+      } else {
+        content.push(child)
+      }
+    })
+    abstract.empty()
+    abstract.append(meta)
+    abstract.append(article.createElement('abstract-content').append(content))
+    abstract.append(back)
+  })
+}
+
+function wrapBodyContent(article) {
+  let bodies = article.findAll('body')
+  bodies.forEach((body) => {
+    const sigBlock = body.find('sig-block')
+    const children = body.children
+    body.empty()
+    body.append(
+      article.createElement('body-content').append(children),
+    )
+    if (sigBlock) {
+      body.append(sigBlock)
+    }
+  })
 }
 
 /*
