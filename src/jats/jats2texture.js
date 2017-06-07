@@ -100,17 +100,20 @@ function secToHeadings(article) {
   // find all top-level sections
   let topLevelSecs = article.findAll('sec').filter(sec => sec.parentNode.tagName !== 'sec')
   topLevelSecs.forEach((sec) => {
-    _secToHeading(sec, 1)
+    _replaceEl(sec, _flattenSec(sec, 1))
   })
 }
 
-function _secToHeading(sec, level) {
-  const parent = sec.parentNode
-  const nextSibling = sec.nextSibling
+function _replaceEl(el, els) {
+  const parent = el.parentNode
+  const next = el.nextSibling
+  const L = els.length
+  els.forEach(_el => parent.insertBefore(_el, next))
+  el.remove()
+}
 
-  // skip sections which have been processed already
-  // i.e. they have been detached from their parent
-  if (!parent) return
+function _flattenSec(sec, level) {
+  let result = []
 
   let h = sec.createElement('heading')
   h.attr(sec.getAttributes())
@@ -131,21 +134,19 @@ function _secToHeading(sec, level) {
     title.remove()
   }
 
+  result.push(h)
+
   // process the remaining content recursively
   let children = sec.children
   let L = children.length
   for (let i = 0; i < L; i++) {
     const child = children[i]
     if (child.tagName === 'sec') {
-      _secToHeading(child, level+1)
+      result = result.concat(_flattenSec(child, level+1))
+    } else {
+      result.push(child)
     }
   }
-  // now we move all children to the parent level
-  parent.replaceChild(sec, h)
-  children = sec.children
-  L = children.length
-  for (let i = L - 1; i >= 0; i--) {
-    parent.insertBefore(children[i], nextSibling)
-  }
-  console.assert(!sec.parentNode, '<sec> element should have been detached.')
+
+  return result
 }
