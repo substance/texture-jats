@@ -97,10 +97,14 @@ function _pBlock(p) {
 }
 
 function secToHeadings(article) {
-  article.findAll('sec').forEach(_secToHeading)
+  // find all top-level sections
+  let topLevelSecs = article.findAll('sec').filter(sec => sec.parentNode.tagName !== 'sec')
+  topLevelSecs.forEach((sec) => {
+    _secToHeading(sec, 1)
+  })
 }
 
-function _secToHeading(sec, level=1) {
+function _secToHeading(sec, level) {
   const parent = sec.parentNode
   const nextSibling = sec.nextSibling
 
@@ -113,9 +117,19 @@ function _secToHeading(sec, level=1) {
   h.attr('level', level)
 
   // move the section front matter
-  h.append(sec.find('sec-meta'))
-  h.append(sec.find('label'))
-  h.append(sec.find('title'))
+  if(sec.find('sec-meta')) {
+    console.error('<sec-meta> is not supported by <heading> right now.')
+  }
+  let label = sec.find('label')
+  if (label) {
+    h.attr('label', label.textContent)
+    label.remove()
+  }
+  let title = sec.find('title')
+  if (title) {
+    h.append(title.childNodes)
+    title.remove()
+  }
 
   // process the remaining content recursively
   let children = sec.children
@@ -123,7 +137,7 @@ function _secToHeading(sec, level=1) {
   for (let i = 0; i < L; i++) {
     const child = children[i]
     if (child.tagName === 'sec') {
-      _secToHeading(child)
+      _secToHeading(child, level+1)
     }
   }
   // now we move all children to the parent level

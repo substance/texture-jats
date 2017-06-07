@@ -801,23 +801,18 @@
   <define name="sec.class">
     <ref name="heading"/>
   </define>
-
   <define name="heading">
     <element name="heading">
       <ref name="sec-attlist"/>
       <optional>
         <attribute name="level"/>
       </optional>
-      <optional>
-        <ref name="sec-meta"/>
-      </optional>
-      <optional>
-        <ref name="label"/>
-      </optional>
-      <optional>
-        <ref name="label"/>
-      </optional>
-      <ref name="title" />
+      <zeroOrMore>
+        <choice>
+          <text/>
+          <ref name="all-phrase"/>
+        </choice>
+      </zeroOrMore>
     </element>
   </define>
 
