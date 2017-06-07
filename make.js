@@ -76,12 +76,12 @@ b.task('default', ['build'])
 /* Internal helpers */
 
 function _compile(name, src, searchDirs, baseDir='generated', options = {} ) {
-  const DEST = `${baseDir}/${name}.data.js`
+  const DEST = `tmp/${name}.data.js`
   const CLASSIFICATION = `${baseDir}/${name}.classification.json`
-  const ISSUES = `${baseDir}/${name}.issues.txt`
+  const ISSUES = `tmp/${name}.issues.txt`
   const entry = path.basename(src)
   b.custom(`Compiling schema '${name}'...`, {
-    src: src,
+    src: ['data/rng/*.rng', 'src/**/*.rng'],
     dest: DEST,
     execute() {
       const { compileRNG, serializeSchema, checkSchema } = require('./tmp/tools')

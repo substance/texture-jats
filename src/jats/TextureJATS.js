@@ -1,4 +1,4 @@
-import TextureJATSData from './TextureJATS.data'
+import TextureJATSData from '../../tmp/TextureJATS.data'
 import deserializeSchema from '../xml/deserializeSchema'
 
 const TextureJATS = deserializeSchema(TextureJATSData)
