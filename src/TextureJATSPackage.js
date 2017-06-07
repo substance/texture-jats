@@ -13,6 +13,8 @@ import ExternalNode from './document/ExternalNode'
 import ExternalNodeConverter from './document/ExternalNodeConverter'
 import TextureJATS from './jats/TextureJATS'
 import TextureJATSImporter from './document/TextureJATSImporter'
+import ContainerNode from './document/ContainerNode'
+import ContainerNodeConverter from './document/ContainerNodeConverter'
 
 export default {
   name: 'TextureJATS',
@@ -66,6 +68,11 @@ function registerSchema(config) {
       case 'external': {
         NodeClass = ExternalNode
         ConverterClass = ExternalNodeConverter
+        break
+      }
+      case 'container': {
+        NodeClass = ContainerNode
+        ConverterClass = ContainerNodeConverter
         break
       }
       default:

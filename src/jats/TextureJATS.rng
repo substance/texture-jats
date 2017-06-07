@@ -750,4 +750,70 @@
     </choice>
   </define>
 
+  <define name="abstract-model">
+    <zeroOrMore>
+      <ref name="id.class"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="sec-meta"/>
+    </optional>
+    <optional>
+      <ref name="label"/>
+    </optional>
+    <optional>
+      <ref name="title"/>
+    </optional>
+    <optional>
+      <ref name="abstract-content"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="sec-back-matter-mix"/>
+    </zeroOrMore>
+  </define>
+  <define name="abstract-content">
+    <element name="abstract-content">
+      <zeroOrMore>
+        <ref name="para-level"/>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="body-model">
+    <optional>
+      <ref name="body-content"/>
+    </optional>
+    <optional>
+      <ref name="sig-block"/>
+    </optional>
+  </define>
+  <define name="body-content">
+    <element name="body-content">
+      <zeroOrMore>
+        <choice>
+          <ref name="sec.class"/>
+          <ref name="para-level"/>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <!-- custom element used to replace <sec> -->
+  <define name="sec.class">
+    <ref name="heading"/>
+  </define>
+  <define name="heading">
+    <element name="heading">
+      <ref name="sec-attlist"/>
+      <optional>
+        <attribute name="level"/>
+      </optional>
+      <zeroOrMore>
+        <choice>
+          <text/>
+          <ref name="all-phrase"/>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+
 </grammar>

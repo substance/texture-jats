@@ -14,7 +14,8 @@ function _node2element(dom, node) {
       break
     }
     case 'element':
-    case 'inline-element': {
+    case 'inline-element':
+    case 'container': {
       el = _renderElementNode(dom, node)
       break
     }

@@ -10,7 +10,8 @@ const TYPE_MAP = {
   'annotation': 3,
   'anchor': 4,
   'hybrid': 5,
-  'external': 6
+  'external': 6,
+  'container': 7,
 }
 
 /*

@@ -20,6 +20,10 @@ b.task('compile', ['tools'], () => {
   _compile('TextureJATS', 'src/jats/TextureJATS.rng', RNG_SEARCH_DIRS, 'src/jats')
 })
 
+b.task('compile:debug', ['tools'], () => {
+  _compile('TextureJATS', 'src/jats/TextureJATS.rng', RNG_SEARCH_DIRS, 'src/jats', { debug: true })
+})
+
 // internal tools compiled to be able to use them here
 b.task('tools', () => {
   b.js('./src/tools.js', {
@@ -71,13 +75,13 @@ b.task('default', ['build'])
 
 /* Internal helpers */
 
-function _compile(name, src, searchDirs, baseDir='generated') {
-  const DEST = `${baseDir}/${name}.data.js`
+function _compile(name, src, searchDirs, baseDir='generated', options = {} ) {
+  const DEST = `tmp/${name}.data.js`
   const CLASSIFICATION = `${baseDir}/${name}.classification.json`
-  const ISSUES = `${baseDir}/${name}.issues.txt`
+  const ISSUES = `tmp/${name}.issues.txt`
   const entry = path.basename(src)
   b.custom(`Compiling schema '${name}'...`, {
-    src: src,
+    src: ['data/rng/*.rng', 'src/**/*.rng'],
     dest: DEST,
     execute() {
       const { compileRNG, serializeSchema, checkSchema } = require('./tmp/tools')
@@ -88,10 +92,12 @@ function _compile(name, src, searchDirs, baseDir='generated') {
       const xmlSchema = compileRNG(fs, searchDirs, entry, manualClassification)
       let schemaData = serializeSchema(xmlSchema)
       b.writeSync(DEST, `export default ${JSON.stringify(schemaData)}`)
-      // now check the schema for issues
-      const issues = checkSchema(xmlSchema)
-      const issuesData = [`${issues.length} issues:`, ''].concat(issues).join('\n')
-      b.writeSync(ISSUES, issuesData)
+
+      if (options.debug) {
+        const issues = checkSchema(xmlSchema)
+        const issuesData = [`${issues.length} issues:`, ''].concat(issues).join('\n')
+        b.writeSync(ISSUES, issuesData)
+      }
     }
   })
 }

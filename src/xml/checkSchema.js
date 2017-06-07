@@ -95,7 +95,8 @@ export default function checkSchema(xmlSchema) {
         issues = issues.concat(_checkTextElement(elementSchema))
         break
       }
-      case 'element': {
+      case 'element':
+      case 'container': {
         issues = issues.concat(_checkElement(elementSchema))
         break
       }

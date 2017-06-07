@@ -1,6 +1,8 @@
 {
   "abbrev": "inline-element",
+  "abstract-content": "container",
   "bold": "annotation",
+  "body-content": "container",
   "break": "inline-element",
   "chem-struct": "inline-element",
   "ext-link": "annotation",
