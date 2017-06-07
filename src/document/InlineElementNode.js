@@ -1,4 +1,5 @@
 import { InlineNode } from 'substance'
+import node2element from './node2element'
 
 export default
 class InlineElementNode extends InlineNode {
@@ -23,6 +24,10 @@ class InlineElementNode extends InlineNode {
       throw new Error('parent of inline-element is implicitly given')
     }
     this._parent = parent
+  }
+
+  toXML() {
+    return node2element(this)
   }
 
 }
