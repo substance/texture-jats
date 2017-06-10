@@ -52,6 +52,7 @@ export default class TextNode extends DocumentNode {
 TextNode.prototype._elementType = 'text'
 
 TextNode.isText = true
+TextNode.isBlock = true
 
 TextNode.type = 'text'
 
